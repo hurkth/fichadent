@@ -32,7 +32,7 @@ Fuera del MVP: varios doctores por consultorio, cobros, recordatorios automátic
 ### 2. App
 
 ```bash
-npm install --legacy-peer-deps
+npm install
 cp .env.example .env.local      # URL + llave pública de Supabase y WhatsApp de ventas
 npm run dev                      # http://localhost:3000
 ```
