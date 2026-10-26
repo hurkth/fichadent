@@ -1,3 +1,5 @@
+> Fichadent: los tokens `gold-*`/`pink-*` de este documento ahora son `brand-*` y toman el color de cada consultorio (`.brand-scope` en `globals.css`).
+
 # Spec 02 · Design system
 
 Fuente: `design/screens/00-design-system.html`. Tablet primero, Manrope, objetivos táctiles de 48 px o más, mucho blanco y dorado con medida.
