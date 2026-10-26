@@ -11,6 +11,7 @@ const PUBLIC_PATHS = ['/login', '/registro', '/reset-password', '/auth'];
 
 /** Páginas de marketing (landing, SEO). Se sirven sin sesión y sin tocar Supabase. */
 const MARKETING_PATHS = [
+  '/consultorio',
   '/precios',
   '/software-dental',
   '/historia-clinica-odontologica',
@@ -77,8 +78,8 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // Con sesión: el login, el registro y la landing llevan directo al consultorio.
-  if (user && (path === '/' || path === '/login' || path === '/registro')) {
+  // Con sesión: el login y el registro llevan directo al consultorio. La landing (/) se ve siempre.
+  if (user && (path === '/login' || path === '/registro')) {
     const keep = request.cookies.has(REMEMBER_COOKIE) || request.cookies.has(SESSION_COOKIE);
     if (keep) return redirectTo('/inicio');
   }

@@ -3,22 +3,16 @@
 import { WifiOff } from 'lucide-react';
 import { useOnlineStatus } from '@/hooks/use-online-status';
 
-/** Aviso global cuando no hay red (D-03: sin guardado offline en el MVP). */
+/** Cápsula flotante arriba al centro cuando no hay red (D-03: sin guardado offline en el MVP). */
 export function OfflineBanner() {
   const online = useOnlineStatus();
   if (online) return null;
   return (
-    <div
-      role="alert"
-      className="mx-4 mt-4 flex items-start gap-3 rounded-2xl border border-brand-100 bg-st-progress-bg px-4 py-3.5 text-brand-900 md:mx-8"
-    >
-      <WifiOff className="mt-0.5 size-5 shrink-0" aria-hidden />
-      <span className="flex flex-col gap-1">
-        <span className="text-[15px] font-extrabold">Sin conexión</span>
-        <span className="text-sm leading-snug font-semibold">
-          Los cambios no se pueden guardar hasta que vuelva la señal. Lo que escribiste no se pierde.
-        </span>
-      </span>
+    <div role="alert" className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-4">
+      <div className="glass-float flex max-w-[640px] items-center gap-3 rounded-full px-5 py-3 text-st-progress-fg">
+        <WifiOff className="size-5 shrink-0" aria-hidden />
+        <span className="text-sm leading-snug font-bold">Sin conexión · Los cambios no se pueden guardar hasta que vuelva la señal.</span>
+      </div>
     </div>
   );
 }

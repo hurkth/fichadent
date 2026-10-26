@@ -36,7 +36,7 @@ export function Dialog({ open, onClose, title, hideTitle, size = 'md', children,
       }}
       aria-label={title}
       className={cn(
-        'm-auto max-h-[92dvh] rounded-[20px] border border-line-card bg-surface p-0 text-ink backdrop:bg-ink/45',
+        'm-auto max-h-[92dvh] rounded-[34px] border-0 bg-white/95 p-0 text-ink shadow-[0_30px_80px_rgba(20,40,60,.25)] backdrop:bg-ink/35 backdrop:backdrop-blur-sm',
         size === 'sm' && 'w-[min(440px,calc(100vw-32px))]',
         size === 'md' && 'w-[min(560px,calc(100vw-32px))]',
         size === 'full' && 'h-[92dvh] w-[min(1100px,calc(100vw-32px))] bg-ink',

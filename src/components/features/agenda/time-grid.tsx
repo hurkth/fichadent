@@ -76,7 +76,7 @@ export function TimeGrid({ days, items, selectedId, onSelect, onSlot, onDay }: T
   };
 
   return (
-    <div className="overflow-hidden rounded-[20px] border border-line-card bg-surface">
+    <div className="glass-card overflow-hidden rounded-[28px]">
       {multi ? (
         <div className="grid border-b border-line-card" style={{ gridTemplateColumns: `56px repeat(${days.length}, minmax(0, 1fr))` }}>
           <span />

@@ -76,6 +76,8 @@ export interface ClinicSession {
   displayName: string;
   role: 'owner' | 'dentist' | 'assistant';
   email: string;
+  /** Administrador de Fichadent: puede editar la landing (/admin/landing). */
+  isPlatformAdmin?: boolean;
   clinic: {
     id: string;
     name: string;

@@ -16,9 +16,9 @@ export function PatientAvatar({
   size,
 }: {
   patient: Pick<IdentityData, 'first_names' | 'last_names'>;
-  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'poster' | 'hero';
 }) {
-  return <Avatar initials={initials(patient)} size={size} />;
+  return <Avatar initials={initials(patient)} size={size} seed={`${patient.first_names} ${patient.last_names}`} />;
 }
 
 /** "HC 00248 · 47 años · DNI 41827365 · 951 284 736" con las partes que existan. */

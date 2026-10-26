@@ -189,3 +189,12 @@ export function reminderMessage({
 export const DEFAULT_HOURS: [number, number] = [8, 20];
 
 export const DURATIONS = [15, 30, 45, 60, 90, 120];
+
+/** Próxima cita de hoy (ends_at > ahora, programada o confirmada). Inicio · tarjeta «Ahora». */
+export function pickNext<T extends { status: string; starts_at: string; ends_at: string }>(items: T[], now: Date): T | null {
+  return (
+    [...items]
+      .filter((a) => (a.status === 'scheduled' || a.status === 'confirmed') && new Date(a.ends_at) > now)
+      .sort((a, b) => a.starts_at.localeCompare(b.starts_at))[0] ?? null
+  );
+}

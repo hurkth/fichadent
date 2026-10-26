@@ -24,7 +24,7 @@ export function EmptyState({ icon: Icon, title, description, actions, tone = 'ne
   return (
     <section
       className={cn(
-        'flex flex-col items-center justify-center gap-3 rounded-[18px] border bg-surface px-6 py-10 text-center',
+        'flex flex-col items-center justify-center gap-3 glass-card rounded-[28px] px-6 py-10 text-center',
         tone === 'alert' ? 'border-alert-200' : 'border-line-card',
         className,
       )}

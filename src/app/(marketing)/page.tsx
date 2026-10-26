@@ -5,29 +5,27 @@ import { ArrowRight, CalendarDays, Check, FileStack, Lock, MessageCircle, Palett
 import { JsonLd } from '@/components/marketing/json-ld';
 import { SIGNUP_HREF, isExternal, salesHref } from '@/components/marketing/links';
 import { TabletMockup } from '@/components/marketing/tablet-mockup';
-import { FAQS, LANDING, PLANS, WHATSAPP_MESSAGES } from '@/content/landing';
+import { LANDING, WHATSAPP_MESSAGES } from '@/content/landing';
+import { getLandingContent } from '@/lib/data/landing';
 import { cn } from '@/lib/cn';
 import { SALES_WHATSAPP } from '@/lib/constants';
 import { formatSoles } from '@/lib/format';
 import { SITE_URL } from '@/lib/site';
 
-export const dynamic = 'force-static';
+/** Se regenera cada 5 min (y al guardar en /admin/landing). */
+export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: { absolute: LANDING.title },
-  description: LANDING.description,
-  keywords: [...LANDING.keywords],
-  alternates: { canonical: '/' },
-  openGraph: {
-    type: 'website',
-    locale: 'es_PE',
-    siteName: 'Fichadent',
-    url: '/',
-    title: LANDING.title,
-    description: LANDING.description,
-  },
-  twitter: { card: 'summary_large_image', title: LANDING.title, description: LANDING.description },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getLandingContent();
+  return {
+    title: { absolute: seo.title },
+    description: seo.description,
+    keywords: [...LANDING.keywords],
+    alternates: { canonical: '/' },
+    openGraph: { type: 'website', locale: 'es_PE', siteName: 'Fichadent', url: '/', title: seo.title, description: seo.description },
+    twitter: { card: 'summary_large_image', title: seo.title, description: seo.description },
+  };
+}
 
 /* ----------------------------------------------------------------- piezas */
 
@@ -67,8 +65,10 @@ function FeatureCard({ id, icon, iconClass, title, children }: { id?: string; ic
 /* ----------------------------------------------------------------- página */
 
 /** Landing pública (spec 04): presenta Fichadent a odontólogos que aún no lo usan. */
-export default function LandingPage() {
-  const offers = PLANS.filter((p) => p.price !== null).map((p) => ({ '@type': 'Offer', name: p.name, price: p.price, priceCurrency: 'PEN' }));
+export default async function LandingPage() {
+  const content = await getLandingContent();
+  const { hero, plans, faqs, origin, finalCta } = content;
+  const offers = plans.filter((p) => p.price !== null).map((p) => ({ '@type': 'Offer', name: p.name, price: p.price, priceCurrency: 'PEN' }));
   const jsonLd = [
     {
       '@context': 'https://schema.org',
@@ -86,14 +86,14 @@ export default function LandingPage() {
       applicationCategory: 'MedicalApplication',
       operatingSystem: 'Web, iOS, Android',
       inLanguage: 'es-PE',
-      description: LANDING.description,
+      description: content.seo.description,
       url: SITE_URL,
       ...(offers.length ? { offers } : {}),
     },
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: FAQS.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+      mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
     },
   ];
 
@@ -106,26 +106,26 @@ export default function LandingPage() {
         <div className="flex min-w-0 flex-[1_1_460px] flex-col gap-[22px]">
           <span className="inline-flex min-h-9 items-center gap-2 self-start rounded-full bg-white/60 px-3.5 text-[13.5px] font-bold text-brand-700 shadow-[inset_0_1px_0_#fff]">
             <span className="size-2 rounded-full bg-brand-700" />
-            Hecho en Perú para odontólogos independientes
+            {hero.eyebrow}
           </span>
           <h1 id="hero-title" className="m-0 text-[clamp(40px,5.6vw,72px)] leading-none font-extrabold tracking-[-0.05em]">
-            Software dental para tu consultorio: <span className="text-brand-700">historia clínica y agenda</span> en tu tablet.
+            {hero.titleStart} <span className="text-brand-700">{hero.titleHighlight}</span>
+            {hero.titleEnd ? ` ${hero.titleEnd}` : null}
           </h1>
           <p className="m-0 max-w-[560px] text-xl leading-normal font-medium text-[#3A3A3F]">
-            Encuentra a cualquier paciente en segundos por nombre, DNI o celular. Mira sus alertas médicas, registra la visita y escríbele por WhatsApp con
-            un toque.
+            {hero.subtitle}
           </p>
           <div className="flex flex-wrap gap-3">
             <Cta href={SIGNUP_HREF}>
-              Prueba gratis 5 días
+              {hero.primaryCta}
               <ArrowRight className="size-[18px]" aria-hidden />
             </Cta>
             <Cta href="#como-funciona" variant="glass">
-              Ver cómo funciona
+              {hero.secondaryCta}
             </Cta>
           </div>
           <ul className="m-0 flex list-none flex-wrap gap-x-5 gap-y-2 p-0 text-[14.5px] font-semibold text-[#3A3A3F]">
-            {['Sin tarjeta', 'Sin instalar nada', 'Te ayudamos con tus historias en papel'].map((t) => (
+            {hero.checks.map((t) => (
               <li key={t} className="flex items-center gap-1.5">
                 <Check className="size-[18px] text-brand-700" strokeWidth={2.6} aria-hidden />
                 {t}
@@ -294,12 +294,12 @@ export default function LandingPage() {
         <div className="mb-8 text-center">
           <span className={eyebrow}>PRECIOS</span>
           <h2 id="precios-title" className={cn(h2, 'mt-2.5 mb-2.5')}>
-            Un precio simple para tu consultorio.
+            {content.plansTitle}
           </h2>
-          <p className="m-0 text-lg text-[#3A3A3F]">Pruébalo 5 días gratis. Sin tarjeta, sin contrato.</p>
+          <p className="m-0 text-lg text-[#3A3A3F]">{content.plansSubtitle}</p>
         </div>
         <div className="mx-auto grid max-w-[880px] grid-cols-[repeat(auto-fit,minmax(min(100%,320px),1fr))] gap-4">
-          {PLANS.map((p) => (
+          {plans.map((p) => (
             <article
               key={p.id}
               className={cn('flex flex-col gap-4 rounded-[38px] p-8', p.featured ? 'glass ring-2 ring-brand-700' : 'glass-soft')}
@@ -342,17 +342,14 @@ export default function LandingPage() {
       <section aria-labelledby="origen-title" className={cn(section, 'pt-[110px]')}>
         <div className="glass-lens flex flex-wrap items-center gap-8 rounded-[40px] p-8 md:p-12">
           <div className="flex-[1_1_460px]">
-            <span className="text-[13px] font-extrabold tracking-[0.1em] opacity-85">NACIÓ EN UN CONSULTORIO REAL</span>
+            <span className="text-[13px] font-extrabold tracking-[0.1em] opacity-85">{origin.eyebrow}</span>
             <h2 id="origen-title" className="m-0 mt-2.5 mb-3 text-[clamp(28px,3.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.045em]">
-              Hecho en Puno, junto a una odontóloga que atiende sola.
+              {origin.title}
             </h2>
-            <p className="m-0 text-lg leading-normal opacity-95">
-              Por eso cada acción frecuente está a uno o dos toques, los botones son grandes y nada te obliga a capacitarte. Si sabes usar WhatsApp, sabes usar
-              Fichadent.
-            </p>
+            <p className="m-0 text-lg leading-normal opacity-95">{origin.text}</p>
           </div>
           <ul className="m-0 flex flex-[1_1_300px] list-none flex-col gap-2.5 p-0">
-            {['Soporte en español, por WhatsApp', 'Pensado para consultorios pequeños', 'Pagos en soles'].map((t) => (
+            {origin.bullets.map((t) => (
               <li key={t} className="flex min-h-14 items-center rounded-full bg-white/15 px-5 text-base font-bold shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]">
                 {t}
               </li>
@@ -367,7 +364,7 @@ export default function LandingPage() {
           Preguntas frecuentes
         </h2>
         <div className="flex flex-col gap-2.5">
-          {FAQS.map((f) => (
+          {faqs.map((f) => (
             <details key={f.q} className="group glass-soft rounded-[28px] px-6">
               <summary className="flex min-h-[68px] cursor-pointer list-none items-center justify-between gap-4 text-lg font-bold [&::-webkit-details-marker]:hidden">
                 {f.q}
@@ -384,9 +381,9 @@ export default function LandingPage() {
       {/* 10 · CTA final */}
       <section aria-labelledby="cta-title" className={cn(section, 'pt-[110px] text-center')}>
         <h2 id="cta-title" className="m-0 mx-auto mb-3.5 max-w-[860px] text-[clamp(36px,5vw,64px)] leading-none font-extrabold tracking-[-0.05em]">
-          Tu consultorio ordenado <span className="text-brand-700">desde hoy.</span>
+          {finalCta.titleStart} <span className="text-brand-700">{finalCta.titleHighlight}</span>
         </h2>
-        <p className="m-0 mb-7 text-[19px] text-[#3A3A3F]">5 días gratis. Sin tarjeta. Te ayudamos a empezar.</p>
+        <p className="m-0 mb-7 text-[19px] text-[#3A3A3F]">{finalCta.subtitle}</p>
         <div className="flex flex-wrap justify-center gap-3">
           <Cta href={SIGNUP_HREF} className="min-h-16 px-8 text-lg">
             Crear mi cuenta gratis

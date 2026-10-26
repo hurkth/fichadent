@@ -7,18 +7,18 @@ export type ButtonVariant = 'primary' | 'secondary' | 'whatsapp' | 'ghost' | 'da
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: 'bg-brand-700 text-white border-transparent hover:bg-brand-900',
-  secondary: 'bg-surface text-ink border-line hover:border-ink-subtle',
-  whatsapp: 'bg-whatsapp text-white border-transparent hover:brightness-110',
+  primary: 'btn-glow bg-brand-700 text-white border-transparent hover:bg-brand-900',
+  secondary: 'bg-white/85 text-ink border-transparent shadow-[inset_0_1px_0_#fff,0_2px_8px_rgba(20,40,60,.08)] hover:bg-white',
+  whatsapp: 'bg-whatsapp text-white border-transparent shadow-[inset_0_1px_0_rgba(255,255,255,.3)] hover:brightness-110',
   ghost: 'bg-transparent text-brand-700 border-transparent hover:text-brand-900',
   danger: 'bg-alert text-white border-transparent hover:brightness-110',
 };
 
 const SIZES: Record<ButtonSize, string> = {
-  sm: 'min-h-12 px-4 text-[15px] rounded-[14px]',
-  md: 'min-h-[52px] px-5 text-base rounded-[14px]',
-  lg: 'min-h-16 px-7 text-lg rounded-2xl',
-  icon: 'size-[52px] p-0 rounded-[14px]',
+  sm: 'min-h-12 px-5 text-[15px] rounded-full',
+  md: 'min-h-[52px] px-6 text-base rounded-full',
+  lg: 'min-h-16 px-8 text-lg rounded-full',
+  icon: 'size-[52px] p-0 rounded-full',
 };
 
 /** Clases del botón, reutilizables en enlaces y en <label> que abren archivos. */

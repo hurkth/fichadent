@@ -8,11 +8,8 @@ export async function middleware(request: NextRequest) {
       ? NextResponse.next()
       : new NextResponse(null, { status: 404 });
   }
-  // Páginas de marketing sin cookie de sesión: no se consulta Supabase (más rápido para Google).
-  const path = request.nextUrl.pathname;
-  const hasAuthCookie = request.cookies.getAll().some((c) => c.name.startsWith('sb-'));
-  if (path !== '/' && isMarketingPath(path)) return NextResponse.next();
-  if (path === '/' && !hasAuthCookie) return NextResponse.next();
+  // Páginas públicas (landing, webs de consultorios, SEO): no se consulta Supabase, con o sin sesión.
+  if (isMarketingPath(request.nextUrl.pathname)) return NextResponse.next();
   return updateSession(request);
 }
 

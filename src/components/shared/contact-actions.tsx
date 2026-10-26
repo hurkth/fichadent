@@ -8,7 +8,7 @@ export interface ContactActionsProps {
   phone: string | null;
   name: string;
   /** "icon": solo íconos 52×52 (filas compactas). "full": con texto. "stretch": ocupan el ancho (móvil). */
-  variant?: 'icon' | 'full' | 'stretch';
+  variant?: 'icon' | 'round' | 'full' | 'stretch';
   /** Mensaje prellenado de WhatsApp (recordatorios). */
   message?: string;
   /** En móvil el botón Llamar muestra el número. */
@@ -19,8 +19,12 @@ export interface ContactActionsProps {
 /** WhatsApp (siempre verde) + Llamar (siempre secundario). Deshabilitados sin celular. */
 export function ContactActions({ phone, name, variant = 'full', message, showNumber, className }: ContactActionsProps) {
   const disabled = !phone;
-  const iconOnly = variant === 'icon';
-  const common = { disabled, size: iconOnly ? ('icon' as const) : ('md' as const), className: cn(variant === 'stretch' && 'flex-1') };
+  const iconOnly = variant === 'icon' || variant === 'round';
+  const common = {
+    disabled,
+    size: iconOnly ? ('icon' as const) : ('md' as const),
+    className: cn(variant === 'stretch' && 'flex-1', variant === 'round' && 'size-12'),
+  };
 
   return (
     <div className={cn('flex shrink-0 gap-2.5', variant === 'stretch' && 'w-full', className)}>

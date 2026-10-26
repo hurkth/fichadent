@@ -34,7 +34,7 @@ export function MonthGrid({
   }
 
   return (
-    <div className="overflow-hidden rounded-[20px] border border-line-card bg-surface">
+    <div className="glass-card overflow-hidden rounded-[28px]">
       <div className="grid grid-cols-7 border-b border-line-card">
         {HEAD.map((h) => (
           <span key={h} className="py-2.5 text-center text-xs font-bold text-ink-muted uppercase">

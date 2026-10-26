@@ -2,7 +2,7 @@ import { forwardRef, type InputHTMLAttributes, type ReactNode, type TextareaHTML
 import { cn } from '@/lib/cn';
 
 const base =
-  'block w-full rounded-[14px] border-[1.5px] bg-surface text-ink font-semibold outline-none transition-[border-color,box-shadow] ' +
+  'block w-full rounded-[18px] border-[1.5px] bg-white/90 text-ink font-semibold outline-none transition-[border-color,box-shadow] ' +
   'focus:border-brand-700 focus:ring-4 focus:ring-brand-500/20 disabled:bg-bg disabled:text-ink-muted';
 
 const sizes = {
@@ -23,7 +23,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   { invalid, inputSize = 'md', prefix, suffix, className, ...props },
   ref,
 ) {
-  const border = invalid ? 'border-alert focus:border-alert focus:ring-alert/15' : 'border-line';
+  const border = invalid ? 'border-alert focus:border-alert focus:ring-alert/15' : 'border-black/10';
 
   if (!prefix && !suffix) {
     return <input ref={ref} aria-invalid={invalid || undefined} className={cn(base, sizes[inputSize], border, className)} {...props} />;
@@ -32,7 +32,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return (
     <span
       className={cn(
-        'flex w-full items-center overflow-hidden rounded-[14px] border-[1.5px] bg-surface transition-[border-color,box-shadow]',
+        'flex w-full items-center overflow-hidden rounded-[18px] border-[1.5px] bg-white/90 transition-[border-color,box-shadow]',
         'focus-within:border-brand-700 focus-within:ring-4 focus-within:ring-brand-500/20',
         inputSize === 'lg' ? 'h-[60px]' : 'h-14',
         border,

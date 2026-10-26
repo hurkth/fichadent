@@ -19,7 +19,7 @@ export interface LinkTabsProps {
 /** Pestañas como enlaces (estado en la URL). Scroll horizontal en móvil. */
 export function LinkTabs({ tabs, value, hrefFor, label, className }: LinkTabsProps) {
   return (
-    <nav aria-label={label} className={cn('-mx-4 flex gap-0.5 overflow-x-auto whitespace-nowrap px-1.5 md:-mx-3.5 md:px-0', className)}>
+    <nav aria-label={label} className={cn('mb-2 flex max-w-full gap-1 self-start overflow-x-auto rounded-full bg-fill p-1 whitespace-nowrap [scrollbar-width:none]', className)}>
       {tabs.map((t) => {
         const on = t.id === value;
         return (
@@ -30,8 +30,8 @@ export function LinkTabs({ tabs, value, hrefFor, label, className }: LinkTabsPro
             scroll={false}
             aria-current={on ? 'page' : undefined}
             className={cn(
-              'flex min-h-[50px] items-center border-b-[3px] px-3 text-[15px] no-underline md:min-h-[54px] md:px-3.5 md:text-base',
-              on ? 'border-brand-700 font-extrabold text-ink' : 'border-transparent font-semibold text-ink-muted hover:text-ink',
+              'flex min-h-11 items-center rounded-full px-4 text-[15px] no-underline md:min-h-12 md:px-5 md:text-base',
+              on ? 'bg-white font-extrabold text-ink shadow-[0_2px_10px_rgba(20,40,60,.1)]' : 'font-semibold text-ink-muted hover:text-ink',
             )}
           >
             {t.shortLabel ? (

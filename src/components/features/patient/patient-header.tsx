@@ -36,7 +36,7 @@ export function PatientHeader({ patient, alerts, tab }: PatientHeaderProps) {
   const base = `/pacientes/${patient.id}`;
 
   return (
-    <header className="flex flex-col gap-3 border-b border-line-card bg-surface px-4 pt-2.5 md:px-8 md:pt-3">
+    <header className="flex flex-col gap-3 px-4 pt-2.5 md:px-10 md:pt-5">
       <div className="flex items-center justify-between">
         <BackLink href="/pacientes" label="Pacientes" />
         <Link href={`${base}/editar`} aria-label="Editar paciente" className="flex size-11 items-center justify-center text-ink md:hidden">
@@ -45,9 +45,9 @@ export function PatientHeader({ patient, alerts, tab }: PatientHeaderProps) {
       </div>
 
       <div className="flex items-center gap-3 md:gap-[18px]">
-        <PatientAvatar patient={patient} size="xl" />
+        <PatientAvatar patient={patient} size="hero" />
         <div className="flex min-w-0 flex-1 flex-col gap-1 md:gap-1.5">
-          <h1 className="m-0 text-[21px] leading-tight font-extrabold tracking-[-.02em] md:text-[26px]">{name}</h1>
+          <h1 className="m-0 text-[26px] leading-[1.05] font-extrabold tracking-[-0.045em] md:text-[38px]">{name}</h1>
           <PatientIdentity patient={identity} layout="header" include={{ phone: true }} className="hidden md:flex" />
           <PatientIdentity patient={identity} include={{ phone: false }} className="text-[13px] md:hidden" />
         </div>

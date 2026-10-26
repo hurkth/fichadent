@@ -234,7 +234,7 @@ export function AgendaRow({ a, onClick }: { a: AgendaItem; onClick?: () => void 
     <button
       type="button"
       onClick={onClick}
-      className="flex min-h-16 w-full cursor-pointer items-center gap-3 rounded-2xl border border-line-card bg-surface px-4 py-2.5 text-left"
+      className="flex min-h-16 w-full cursor-pointer items-center gap-3 glass-card rounded-[22px] border-0 px-4 py-2.5 text-left"
     >
       <span className="w-12 shrink-0 text-[15px] font-extrabold tabular">{limaTime(a.starts_at)}</span>
       <span className="flex min-w-0 flex-1 flex-col">

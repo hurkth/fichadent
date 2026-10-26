@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { Menu } from 'lucide-react';
 import { LogoMark } from '@/components/ui/logo';
-import { LOGIN_HREF, SIGNUP_HREF } from './links';
+import { AccountLink } from './account-link';
+import { SIGNUP_HREF } from './links';
 
 const LINKS = [
   { href: '/#funciones', label: 'Funciones' },
@@ -31,9 +32,7 @@ export function SiteNav() {
         </ul>
 
         <div className="flex items-center gap-1.5">
-          <Link href={LOGIN_HREF} className="hidden min-h-[52px] items-center rounded-full px-4 text-[15px] font-semibold text-ink no-underline hover:bg-white/60 sm:flex">
-            Iniciar sesión
-          </Link>
+          <AccountLink className="hidden min-h-[52px] items-center rounded-full px-4 text-[15px] font-semibold text-ink no-underline hover:bg-white/60 sm:flex" />
           <Link href={SIGNUP_HREF} className="btn-glow flex min-h-[52px] items-center rounded-full bg-brand-700 px-4 text-[15px] font-bold whitespace-nowrap text-white no-underline hover:bg-brand-900 sm:px-5">
             Prueba gratis
           </Link>
@@ -50,9 +49,7 @@ export function SiteNav() {
                 </li>
               ))}
               <li>
-                <Link href={LOGIN_HREF} className="flex min-h-12 items-center rounded-2xl px-4 text-base font-semibold text-ink no-underline hover:bg-white/70">
-                  Iniciar sesión
-                </Link>
+                <AccountLink className="flex min-h-12 items-center rounded-2xl px-4 text-base font-semibold text-ink no-underline hover:bg-white/70" />
               </li>
             </ul>
           </details>

@@ -73,7 +73,7 @@ export function AppointmentDetail({ appointment: a, onEdit, onClose, className }
   const newPatientHref = `/pacientes/nuevo?nombre=${encodeURIComponent(a.name)}${a.phone ? `&celular=${a.phone}` : ''}&cita=${a.id}`;
 
   return (
-    <article className={cn('flex flex-col gap-4 rounded-[20px] border border-line-card bg-surface p-5 md:p-6', className)}>
+    <article className={cn('glass-card flex flex-col gap-4 rounded-[28px] p-5 md:p-6', className)}>
       <div className="flex items-start gap-3">
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <span className="text-sm font-bold text-ink-muted">

@@ -41,11 +41,15 @@ export const getSession = cache(async (): Promise<ClinicSession | null> => {
     logoUrl = signed?.signedUrl ?? null;
   }
 
+  // Administrador de Fichadent (edita la landing). Sin la migración 0004 → false.
+  const { data: admin } = await supabase.rpc('is_platform_admin');
+
   return {
     userId: row.user_id,
     displayName: row.display_name,
     role: row.role,
     email: user.email ?? '',
+    isPlatformAdmin: admin === true,
     clinic: {
       id: row.clinic.id,
       name: row.clinic.name,

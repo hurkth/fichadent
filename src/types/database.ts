@@ -283,6 +283,50 @@ export type Database = {
         };
         Relationships: [];
       };
+      /** Textos editables de la landing de Fichadent (0004). */
+      site_content: {
+        Row: { key: string; value: Json; updated_at: string; updated_by: string | null };
+        Insert: { key: string; value: Json };
+        Update: { value?: Json };
+        Relationships: [];
+      };
+      /** Web pública de cada consultorio (0004). */
+      clinic_sites: {
+        Row: {
+          clinic_id: string;
+          slug: string;
+          published: boolean;
+          headline: string | null;
+          about: string | null;
+          hours: string | null;
+          city: string | null;
+          maps_url: string | null;
+          show_prices: boolean;
+          updated_at: string;
+        };
+        Insert: {
+          clinic_id?: string;
+          slug: string;
+          published?: boolean;
+          headline?: string | null;
+          about?: string | null;
+          hours?: string | null;
+          city?: string | null;
+          maps_url?: string | null;
+          show_prices?: boolean;
+        };
+        Update: {
+          slug?: string;
+          published?: boolean;
+          headline?: string | null;
+          about?: string | null;
+          hours?: string | null;
+          city?: string | null;
+          maps_url?: string | null;
+          show_prices?: boolean;
+        };
+        Relationships: [];
+      };
       files: {
         Row: {
           id: string;
@@ -325,6 +369,10 @@ export type Database = {
       list_patients: { Args: { page_size?: number; page?: number }; Returns: Json[] };
       delete_patient: { Args: { p_id: string }; Returns: undefined };
       agenda: { Args: { p_from: string; p_to: string }; Returns: Json[] };
+      is_platform_admin: { Args: Record<PropertyKey, never>; Returns: boolean };
+      public_clinic_site: { Args: { p_slug: string }; Returns: Json };
+      public_clinic_slugs: { Args: Record<PropertyKey, never>; Returns: { slug: string; updated_at: string }[] };
+      clinic_slug_available: { Args: { p_slug: string }; Returns: boolean };
     };
     Enums: { [_ in never]: never };
     CompositeTypes: { [_ in never]: never };

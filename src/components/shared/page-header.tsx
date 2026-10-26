@@ -32,14 +32,14 @@ export function PageHeader({ title, subtitle, back, actions, children, variant =
     <header
       className={cn(
         'flex flex-col gap-2',
-        variant === 'bar' ? 'border-b border-line-card bg-surface px-4 pt-3 pb-4 md:px-8' : 'px-4 pt-5 md:px-8 md:pt-7',
+        variant === 'bar' ? 'px-4 pt-4 pb-2 md:px-10 md:pt-7' : 'px-4 pt-5 md:px-10 md:pt-7',
         className,
       )}
     >
       {back ? <BackLink {...back} /> : null}
       <div className="flex flex-wrap items-center gap-3">
         <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <h1 className="m-0 text-[24px] font-extrabold tracking-[-.02em] md:text-[26px]">{title}</h1>
+          <h1 className="m-0 text-[30px] leading-[1.05] font-extrabold tracking-[-0.045em] md:text-[40px]">{title}</h1>
           {subtitle ? <span className="text-sm font-semibold text-ink-muted">{subtitle}</span> : null}
         </div>
         {actions ? <div className="flex flex-wrap gap-2.5">{actions}</div> : null}

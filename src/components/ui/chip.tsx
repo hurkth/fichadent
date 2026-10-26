@@ -21,7 +21,9 @@ export function Chip({ selected = false, size = 'md', className, type = 'button'
       aria-pressed={props.role ? undefined : selected}
       className={cn(
         'inline-flex cursor-pointer items-center gap-2 rounded-full border-[1.5px] transition-colors',
-        selected ? 'border-brand-700 bg-brand-50 font-extrabold text-brand-900' : 'border-line bg-surface font-semibold text-ink hover:border-ink-subtle',
+        selected
+          ? 'border-brand-700 bg-white font-extrabold text-brand-900 shadow-[0_2px_10px_rgba(20,40,60,.1)]'
+          : 'border-transparent bg-white/70 font-semibold text-ink shadow-[inset_0_1px_0_#fff] hover:bg-white',
         SIZES[size],
         className,
       )}

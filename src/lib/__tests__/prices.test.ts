@@ -37,3 +37,33 @@ describe('precios', () => {
     expect(newServiceSchema.safeParse({ name: 'C', category: 'X', requiresTooth: false, price: null }).success).toBe(false);
   });
 });
+
+import { countdownLabel, firstName } from '../greeting';
+
+describe('saludo y cuenta regresiva', () => {
+  it('saca el primer nombre sin el título', () => {
+    expect(firstName('Dra. Lucía Mamani')).toBe('Lucía');
+    expect(firstName('Dr Juan Pérez')).toBe('Juan');
+    expect(firstName('Ana')).toBe('Ana');
+  });
+  it('formatea minutos', () => {
+    expect(countdownLabel(20)).toEqual({ value: '20', unit: 'min' });
+    expect(countdownLabel(80)).toEqual({ value: '1 h 20', unit: 'para la cita' });
+    expect(countdownLabel(120)).toEqual({ value: '2 h', unit: 'para la cita' });
+  });
+});
+
+import { clinicSiteSchema, slugify } from '../schemas/site';
+
+describe('web del consultorio', () => {
+  it('arma la dirección desde el nombre', () => {
+    expect(slugify('Consultorio Dental Sonrisa')).toBe('consultorio-dental-sonrisa');
+    expect(slugify('  Odontología Pérez & Ñahui ')).toBe('odontologia-perez-nahui');
+  });
+  it('valida la dirección y el enlace de Maps', () => {
+    const base = { slug: 'sonrisa-puno', published: true, headline: '', about: '', hours: '', city: 'Puno', maps_url: '', show_prices: true };
+    expect(clinicSiteSchema.safeParse(base).success).toBe(true);
+    expect(clinicSiteSchema.safeParse({ ...base, slug: 'Sonrisa Puno' }).success).toBe(false);
+    expect(clinicSiteSchema.safeParse({ ...base, maps_url: 'maps.google.com/x' }).success).toBe(false);
+  });
+});

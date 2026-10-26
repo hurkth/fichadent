@@ -11,7 +11,7 @@ import { useClinic } from './clinic-context';
  * "¿Tienes tus historias en papel? Te ayudamos a digitalizarlas."
  * Reemplaza la Captura rápida: el servicio lo hace el equipo de Fichadent.
  */
-export function PaperRecordsNote({ className }: { className?: string }) {
+export function PaperRecordsNote({ className, variant = 'card' }: { className?: string; variant?: 'card' | 'chip' }) {
   const { clinic, displayName } = useClinic();
   const href = SALES_WHATSAPP
     ? whatsappUrl(
@@ -20,8 +20,24 @@ export function PaperRecordsNote({ className }: { className?: string }) {
       )
     : null;
 
+  if (variant === 'chip') {
+    return (
+      <a
+        href={href ?? undefined}
+        target="_blank"
+        rel="noreferrer"
+        className={cn(
+          'flex min-h-11 items-center gap-1.5 rounded-full border-[1.5px] border-dashed border-black/25 bg-white/40 px-4 text-[13.5px] font-semibold text-ink no-underline',
+          className,
+        )}
+      >
+        ¿Historias en papel? <strong className="text-whatsapp">Te ayudamos</strong>
+      </a>
+    );
+  }
+
   return (
-    <aside className={cn('flex flex-col gap-3 rounded-[20px] border border-dashed border-brand-500 bg-brand-25 p-4 md:p-5', className)}>
+    <aside className={cn('flex flex-col gap-3 rounded-[28px] border-[1.5px] border-dashed border-black/25 bg-white/40 p-4 md:p-5', className)}>
       <div className="flex items-start gap-3">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-700">
           <FileStack className="size-[22px]" aria-hidden />
