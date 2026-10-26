@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Pencil, Plus } from 'lucide-react';
+import { CalendarPlus, Pencil, Plus } from 'lucide-react';
 import { ButtonLink } from '@/components/ui/button';
 import { LinkTabs } from '@/components/ui/tabs';
 import { ContactActions } from '@/components/shared/contact-actions';
@@ -38,7 +38,7 @@ export function PatientHeader({ patient, alerts, tab }: PatientHeaderProps) {
   return (
     <header className="flex flex-col gap-3 border-b border-line-card bg-surface px-4 pt-2.5 md:px-8 md:pt-3">
       <div className="flex items-center justify-between">
-        <BackLink href="/" label="Pacientes" />
+        <BackLink href="/pacientes" label="Pacientes" />
         <Link href={`${base}/editar`} aria-label="Editar paciente" className="flex size-11 items-center justify-center text-ink md:hidden">
           <Pencil className="size-5" aria-hidden />
         </Link>
@@ -53,6 +53,10 @@ export function PatientHeader({ patient, alerts, tab }: PatientHeaderProps) {
         </div>
         <div className="hidden shrink-0 gap-2.5 md:flex">
           <ContactActions phone={patient.phone} name={name} />
+          <ButtonLink href={`/agenda?nueva=1&paciente=${patient.id}`} variant="secondary" aria-label="Agendar cita">
+            <CalendarPlus className="size-5" aria-hidden />
+            <span className="hidden lg:inline">Agendar</span>
+          </ButtonLink>
           <ButtonLink href={`${base}/visitas/nueva`}>
             <Plus className="size-5" aria-hidden />
             Nueva visita
@@ -63,7 +67,12 @@ export function PatientHeader({ patient, alerts, tab }: PatientHeaderProps) {
         </div>
       </div>
 
-      <ContactActions phone={patient.phone} name={name} variant="stretch" showNumber className="md:hidden" />
+      <div className="flex gap-2.5 md:hidden">
+        <ContactActions phone={patient.phone} name={name} variant="stretch" showNumber className="flex-1" />
+        <ButtonLink href={`/agenda?nueva=1&paciente=${patient.id}`} variant="secondary" size="icon" aria-label="Agendar cita">
+          <CalendarPlus className="size-5" aria-hidden />
+        </ButtonLink>
+      </div>
 
       <MedicalAlerts alerts={alerts} withHeading size="lg" className="hidden md:flex" />
       <MedicalAlerts alerts={alerts} size="sm" className="md:hidden" />

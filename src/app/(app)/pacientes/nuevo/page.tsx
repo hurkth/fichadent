@@ -5,17 +5,21 @@ import type { PatientFormValues } from '@/lib/schemas/patient';
 
 export const metadata: Metadata = { title: 'Nuevo paciente' };
 
-type Search = { nombre?: string; dni?: string; celular?: string };
+type Search = { nombre?: string; dni?: string; celular?: string; cita?: string };
 
 /** Prellenado desde "Crear paciente" en una búsqueda sin resultados. */
-function prefill({ nombre, dni, celular }: Search): Partial<PatientFormValues> {
+function prefill({ nombre, dni, celular, cita }: Search): Partial<PatientFormValues> {
   const values: Partial<PatientFormValues> = {};
   if (dni) values.dni = dni.replace(/\D/g, '').slice(0, 8);
   if (celular) values.phone = celular.replace(/\D/g, '').slice(0, 9);
   if (nombre) {
     // Se suele buscar por apellidos ("Vargas Ttito"): 1-2 palabras van a apellidos.
     const words = nombre.trim().split(/\s+/);
-    if (words.length <= 2) values.last_names = words.join(' ');
+    if (cita && words.length >= 2) {
+      // Desde la agenda llega el nombre completo: "Roberto Ccori Mamani".
+      values.first_names = words[0];
+      values.last_names = words.slice(1).join(' ');
+    } else if (words.length <= 2) values.last_names = words.join(' ');
     else values.first_names = words.join(' ');
   }
   return values;
@@ -31,7 +35,8 @@ export default async function NewPatientPage({ searchParams }: { searchParams: P
         recordLabel={`${next} · se asigna automáticamente`}
         conditions={conditions}
         defaultValues={prefill(search)}
-        cancelHref="/"
+        cancelHref={search.cita ? '/agenda' : '/pacientes'}
+        appointmentId={search.cita && /^[0-9a-f-]{36}$/i.test(search.cita) ? search.cita : null}
       />
     </main>
   );

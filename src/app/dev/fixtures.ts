@@ -2,7 +2,7 @@
  * Datos de ejemplo para /dev/* (solo desarrollo). Copian los del diseño
  * para comparar pantalla a pantalla sin conectar Supabase.
  */
-import type { ClinicSession, FileWithUrl, Patient, PatientCard, PatientCondition, Service, VisitWithTreatments } from '@/types/domain';
+import type { AgendaItem, ClinicSession, FileWithUrl, Patient, PatientCard, PatientCondition, Service, VisitWithTreatments } from '@/types/domain';
 
 const now = '2026-10-05T14:00:00Z';
 const clinic = '00000000-0000-0000-0000-00000000c111';
@@ -180,3 +180,37 @@ export const fxSession: ClinicSession = {
     trialDaysLeft: 5,
   },
 };
+
+/** Agenda de ejemplo alrededor del 5 oct 2026 (lunes). */
+const ap = (n: number, date: string, time: string, minutes: number, name: string, status: AgendaItem['status'], reason: string | null, patient = true): AgendaItem => {
+  const starts = `${date}T${time}:00-05:00`;
+  return {
+    id: uid(700 + n),
+    starts_at: starts,
+    ends_at: new Date(new Date(starts).getTime() + minutes * 60000).toISOString(),
+    status,
+    reason,
+    notes: n === 3 ? 'Trae radiografía de la pieza 36.' : null,
+    patient_id: patient ? uid(n) : null,
+    name,
+    phone: '95128473' + (n % 10),
+    record_number: patient ? `HC-00${240 + n}` : null,
+    visit_id: status === 'done' ? uid(800 + n) : null,
+  };
+};
+
+export const fxAgenda: AgendaItem[] = [
+  ap(1, '2026-10-05', '09:00', 30, 'Rosa Elvira Quispe Mamani', 'done', 'Control'),
+  ap(2, '2026-10-05', '10:00', 60, 'Julio César Mamani Ccama', 'confirmed', 'Endodoncia'),
+  ap(3, '2026-10-05', '10:30', 30, 'Lucía Choque Flores', 'scheduled', 'Evaluación'),
+  ap(4, '2026-10-05', '12:00', 45, 'Pedro Vilca Calsina', 'no_show', 'Limpieza'),
+  ap(5, '2026-10-05', '16:00', 45, 'María Fernanda Torres Salazar', 'scheduled', 'Control'),
+  ap(6, '2026-10-05', '18:00', 30, 'Roberto Ccori', 'scheduled', 'Primera consulta', false),
+  ap(7, '2026-10-06', '09:30', 30, 'Ana Sofía Coaquira', 'confirmed', 'Ortodoncia'),
+  ap(8, '2026-10-07', '15:00', 60, 'Diego Cutipa Zea', 'scheduled', 'Resina'),
+  ap(9, '2026-10-08', '11:00', 30, 'Carmen Arapa', 'cancelled', 'Control'),
+  ap(10, '2026-10-09', '17:00', 30, 'Gabriela Turpo', 'scheduled', 'Evaluación'),
+  ap(11, '2026-10-10', '10:00', 90, 'Miguel Ángel Larico', 'confirmed', 'Endodoncia'),
+  ap(12, '2026-10-14', '09:00', 30, 'José Luis Condori', 'scheduled', 'Control'),
+  ap(13, '2026-10-21', '16:30', 30, 'Rosa Elvira Quispe Mamani', 'scheduled', 'Control'),
+];

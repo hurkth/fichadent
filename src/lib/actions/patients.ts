@@ -10,7 +10,7 @@ import { dbErrorMessage, fieldErrors } from './errors';
 type Created = { id: string; record_number: string };
 
 /** F04 · Alta de paciente con antecedentes. */
-export async function createPatient(input: PatientFormValues): Promise<ActionResult<Created>> {
+export async function createPatient(input: PatientFormValues, appointmentId?: string | null): Promise<ActionResult<Created>> {
   const parsed = patientSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: 'Revisa los campos marcados.', fieldErrors: fieldErrors(parsed.error) };
   const { conditions, ...patient } = parsed.data;
@@ -25,6 +25,16 @@ export async function createPatient(input: PatientFormValues): Promise<ActionRes
       active.map((c) => ({ patient_id: data.id, condition_id: c.conditionId, detail: c.detail ?? null, active: true })),
     );
     if (e2) return { ok: false, error: `Paciente guardado (${data.record_number}), pero no sus antecedentes. Edítalo para completarlos.` };
+  }
+
+  // Cita agendada a alguien sin ficha: queda enlazada al paciente nuevo.
+  if (appointmentId) {
+    await supabase
+      .from('appointments')
+      .update({ patient_id: data.id, guest_name: null, guest_phone: null })
+      .eq('id', appointmentId)
+      .is('patient_id', null);
+    revalidatePath('/agenda');
   }
 
   revalidatePath('/');

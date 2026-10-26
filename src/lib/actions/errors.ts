@@ -5,6 +5,8 @@ import type { ZodError } from 'zod';
 export function dbErrorMessage(error: Pick<PostgrestError, 'code' | 'message'>): string {
   if (error.code === '23505' && error.message.includes('dni')) return 'Ya existe un paciente con ese DNI.';
   if (error.code === '23505') return 'Ese registro ya existe.';
+  if (error.code === '23514' && error.message.includes('appointments_time_order')) return 'La hora de fin debe ser después del inicio.';
+  if (error.code === '23514' && error.message.includes('appointments_who')) return 'Elige un paciente o escribe el nombre.';
   if (error.code === '23514') return 'Hay un dato con formato no válido.';
   if (error.code === '42501') return 'No tienes permiso para hacer esto.';
   if (error.message?.toLowerCase().includes('fetch')) return 'Sin conexión con el servidor. Inténtalo otra vez.';

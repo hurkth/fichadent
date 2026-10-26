@@ -30,12 +30,14 @@ export interface PatientFormProps {
   defaultValues?: Partial<PatientFormValues>;
   /** A dónde vuelve "Cancelar". */
   cancelHref: string;
+  /** Cita (de alguien sin ficha) que se enlaza al paciente al crearlo. */
+  appointmentId?: string | null;
 }
 
 const FORM_ID = 'patient-form';
 
 /** F04 · Datos personales + antecedentes. Mismo componente para crear y editar. */
-export function PatientForm({ mode, patientId, recordLabel, conditions, defaultValues, cancelHref }: PatientFormProps) {
+export function PatientForm({ mode, patientId, recordLabel, conditions, defaultValues, cancelHref, appointmentId }: PatientFormProps) {
   const router = useRouter();
   const toast = useToast();
   const [duplicate, setDuplicate] = useState<DuplicateMatch | null>(null);
@@ -79,7 +81,7 @@ export function PatientForm({ mode, patientId, recordLabel, conditions, defaultV
     if (duplicate) return;
     setServerError(null);
     const raw = getValues();
-    const res = mode === 'create' ? await createPatient(raw) : await updatePatient(patientId!, raw);
+    const res = mode === 'create' ? await createPatient(raw, appointmentId) : await updatePatient(patientId!, raw);
     if (!res.ok) {
       setServerError(res.error);
       Object.entries(res.fieldErrors ?? {}).forEach(([k, msg]) => setError(k as keyof PatientFormValues, { message: msg }));

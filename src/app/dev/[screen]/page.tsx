@@ -2,7 +2,8 @@
  * Vista previa de pantallas con datos de ejemplo. SOLO desarrollo (el middleware
  * responde 404 en producción). Sirve para comparar contra design/screens sin Supabase.
  *   /dev/inicio · /dev/resultados · /dev/sin-resultados · /dev/vacio
- *   /dev/ficha?tab=… · /dev/nuevo-paciente · /dev/nueva-visita · /dev/login
+ *   /dev/ficha?tab=… · /dev/nuevo-paciente · /dev/nueva-visita · /dev/login · /dev/registro
+ *   /dev/agenda?vista=dia|semana|mes · /dev/pacientes · /dev/ajustes
  */
 import { notFound } from 'next/navigation';
 import { Plus } from 'lucide-react';
@@ -24,13 +25,37 @@ import { RecentPatients } from '@/components/features/search/recent-patients';
 import { TodayAppointmentsCard } from '@/components/features/search/today-appointments-card';
 import { VisitForm } from '@/components/features/visit/visit-form';
 import { pendingTreatments } from '@/lib/data/visits';
-import { fxAlerts, fxConditions, fxFiles, fxPatient, fxPatientCards, fxSearchResults, fxServices, fxSession, fxVisits } from '../fixtures';
+import { AgendaView } from '@/components/features/agenda/agenda-view';
+import { SignUpForm } from '@/components/features/auth/sign-up-form';
+import { DeletePatientButton } from '@/components/features/patient/delete-patient-button';
+import { ClinicSettingsForm } from '@/components/features/settings/clinic-settings-form';
+import { PageHeader } from '@/components/shared/page-header';
+import { PaperRecordsNote } from '@/components/shared/paper-records-note';
+import { PatientRow } from '@/components/shared/patient-row';
+import { agendaRange, isAgendaView } from '@/lib/agenda';
+import { fxAgenda, fxAlerts, fxConditions, fxFiles, fxPatient, fxPatientCards, fxSearchResults, fxServices, fxSession, fxVisits } from '../fixtures';
 
 const DEMO_NOW = new Date('2026-10-05T14:00:00Z');
 
-export default async function DevScreen({ params, searchParams }: { params: Promise<{ screen: string }>; searchParams: Promise<{ tab?: string }> }) {
+export default async function DevScreen({ params, searchParams }: { params: Promise<{ screen: string }>; searchParams: Promise<{ tab?: string; vista?: string; cita?: string }> }) {
   if (process.env.NODE_ENV !== 'development') notFound();
-  const [{ screen }, { tab: rawTab }] = await Promise.all([params, searchParams]);
+  const [{ screen }, { tab: rawTab, vista, cita }] = await Promise.all([params, searchParams]);
+
+  if (screen === 'registro') {
+    return (
+      <div className="flex min-h-dvh bg-surface">
+        <BrandPanel />
+        <section className="flex w-full flex-col justify-center gap-9 px-6 py-10 md:w-[540px] md:shrink-0 md:px-[72px]">
+          <Logo />
+          <div className="flex flex-col gap-2">
+            <h1 className="m-0 text-[32px] font-extrabold tracking-[-.02em]">Prueba gratis 5 días</h1>
+            <p className="m-0 text-base font-medium text-ink-muted">Crea tu cuenta y empieza a cargar tus pacientes hoy. Sin tarjeta.</p>
+          </div>
+          <SignUpForm />
+        </section>
+      </div>
+    );
+  }
 
   if (screen === 'login') {
     return (
@@ -62,7 +87,12 @@ export default async function DevScreen({ params, searchParams }: { params: Prom
             initialQuery={q}
             initialResults={screen === 'resultados' ? fxSearchResults : []}
             recent={<RecentPatients patients={screen === 'vacio' ? [] : fxPatientCards} />}
-            aside={<TodayAppointmentsCard />}
+            aside={
+              <div className="flex flex-col gap-4">
+                <TodayAppointmentsCard items={fxAgenda.filter((a) => a.starts_at.startsWith('2026-10-05'))} />
+                <PaperRecordsNote />
+              </div>
+            }
           />
         </main>
       );
@@ -113,6 +143,33 @@ export default async function DevScreen({ params, searchParams }: { params: Prom
             alerts={fxAlerts}
             services={fxServices}
           />
+        </main>
+      );
+      break;
+    case 'agenda': {
+      const v = isAgendaView(vista) ? vista : 'dia';
+      const { days } = agendaRange(v, '2026-10-05');
+      body = <AgendaView view={v} date="2026-10-05" today="2026-10-05" days={days} items={fxAgenda} initialSelected={cita ?? null} />;
+      break;
+    }
+    case 'pacientes':
+      body = (
+        <main className="flex flex-1 flex-col">
+          <PageHeader title="Pacientes" subtitle={`${fxPatientCards.length} pacientes`} />
+          <section className="flex flex-col gap-3 px-4 py-5 md:gap-2 md:px-8">
+            {fxPatientCards.map((p) => (
+              <PatientRow key={p.id} patient={p} href="#" extra={<DeletePatientButton patientId={p.id} name={p.first_names} redirectTo={null} compact />} />
+            ))}
+            <PaperRecordsNote />
+          </section>
+        </main>
+      );
+      break;
+    case 'ajustes':
+      body = (
+        <main className="flex flex-1 flex-col">
+          <PageHeader title="Ajustes del consultorio" subtitle="Así se verá tu consultorio en Fichadent." />
+          <ClinicSettingsForm session={fxSession} />
         </main>
       );
       break;

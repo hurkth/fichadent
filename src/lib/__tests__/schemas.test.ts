@@ -36,3 +36,22 @@ describe('patientSchema (F04)', () => {
     expect(patientSchema.safeParse({ ...base, birth_date: '2999-01-01' }).success).toBe(false);
   });
 });
+
+describe('visitSchema (F06)', () => {
+  it('rechaza piezas que no son FDI', () => {
+    const r = visitSchema.safeParse({
+      visit_date: '2026-10-05',
+      reason: '',
+      notes: '',
+      treatments: [{ serviceId: '00000000-0000-4000-8000-000000000001', teeth: ['19'], wholeMouth: false, status: 'done' }],
+    });
+    expect(r.success).toBe(false);
+  });
+});
+
+describe('legacy_record_number', () => {
+  it('vacío → null', () => {
+    const r = patientSchema.parse({ ...base, legacy_record_number: '' });
+    expect(r.legacy_record_number).toBeNull();
+  });
+});
