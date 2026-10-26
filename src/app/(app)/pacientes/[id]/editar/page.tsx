@@ -30,6 +30,7 @@ export default async function EditPatientPage({ params }: { params: Promise<{ id
           address: patient.address ?? '',
           occupation: patient.occupation ?? '',
           marital_status: patient.marital_status,
+          legacy_record_number: patient.legacy_record_number ?? '',
         }}
       />
     </main>

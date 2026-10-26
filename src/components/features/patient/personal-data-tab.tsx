@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { maritalLabel } from '@/lib/constants';
 import { ageFrom, formatDate, formatPhone, fullName } from '@/lib/format';
 import type { Patient } from '@/types/domain';
-import { ArchivePatientButton } from './archive-patient-button';
+import { DeletePatientButton } from './delete-patient-button';
 
 /** Ficha · Datos personales (solo lectura). */
 export function PersonalDataTab({ patient, fromPaper }: { patient: Patient; fromPaper: boolean }) {
@@ -47,7 +47,7 @@ export function PersonalDataTab({ patient, fromPaper }: { patient: Patient; from
         </dl>
       </Card>
       <div className="flex justify-end">
-        <ArchivePatientButton patientId={patient.id} name={fullName(patient)} />
+        <DeletePatientButton patientId={patient.id} name={fullName(patient)} />
       </div>
     </div>
   );

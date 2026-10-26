@@ -69,3 +69,19 @@ export async function getNextRecordNumber(): Promise<string> {
   const next = (data?.record_seq ?? 0) + 1;
   return `HC-${String(next).padStart(5, '0')}`;
 }
+
+export const PATIENTS_PAGE_SIZE = 20;
+
+/** Lista de pacientes (CRUD), ordenada por apellido. */
+export async function listPatients(page = 0): Promise<{ patients: PatientCard[]; total: number }> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc('list_patients', { page_size: PATIENTS_PAGE_SIZE, page });
+  if (error) throw error;
+  const rows = (data ?? []) as unknown as (PatientCard & { total: number })[];
+  if (rows.length === 0 && page > 0) {
+    // Página fuera de rango: solo interesa el total.
+    const { count } = await supabase.from('patients').select('id', { count: 'exact', head: true }).is('deleted_at', null);
+    return { patients: [], total: count ?? 0 };
+  }
+  return { patients: rows, total: rows[0]?.total ?? 0 };
+}

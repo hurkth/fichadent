@@ -2,7 +2,7 @@
  * Vista previa de pantallas con datos de ejemplo. SOLO desarrollo (el middleware
  * responde 404 en producción). Sirve para comparar contra design/screens sin Supabase.
  *   /dev/inicio · /dev/resultados · /dev/sin-resultados · /dev/vacio
- *   /dev/ficha?tab=… · /dev/nuevo-paciente · /dev/captura · /dev/nueva-visita · /dev/login
+ *   /dev/ficha?tab=… · /dev/nuevo-paciente · /dev/nueva-visita · /dev/login
  */
 import { notFound } from 'next/navigation';
 import { Plus } from 'lucide-react';
@@ -11,7 +11,6 @@ import { Logo } from '@/components/ui/logo';
 import { AppShell } from '@/components/shared/app-shell';
 import { BrandPanel } from '@/components/features/auth/brand-panel';
 import { LoginForm } from '@/components/features/auth/login-form';
-import { QuickCaptureForm } from '@/components/features/capture/quick-capture-form';
 import { FilesTab } from '@/components/features/files/files-tab';
 import { ConditionsTab } from '@/components/features/patient/conditions-tab';
 import { PatientHeader, isPatientTab } from '@/components/features/patient/patient-header';
@@ -103,13 +102,6 @@ export default async function DevScreen({ params, searchParams }: { params: Prom
             defaultValues={{ first_names: 'Milagros', last_names: 'Ccori Huanca', dni: '47205318', birth_date: '1992-11-09', phone: '965418203', address: 'Urb. Los Pinos D-12, Cerro Colorado, Arequipa', occupation: 'Docente', marital_status: 'conviviente' }}
             cancelHref="/dev/inicio"
           />
-        </main>
-      );
-      break;
-    case 'captura':
-      body = (
-        <main className="flex flex-1 flex-col">
-          <QuickCaptureForm nextRecordNumber="HC-00253" />
         </main>
       );
       break;

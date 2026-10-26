@@ -24,15 +24,10 @@ export function SearchResults({ query, results }: { query: string; results: Pati
         description="Revisa cómo está escrito o busca por DNI o celular. Si es un paciente nuevo, regístralo ahora."
         className="md:max-h-[420px] md:flex-1"
         actions={
-          <>
-            <ButtonLink href={newPatientHref(query)}>
-              <UserPlus className="size-5" aria-hidden />
-              Crear paciente
-            </ButtonLink>
-            <ButtonLink href="/captura" variant="secondary">
-              Es una historia en papel
-            </ButtonLink>
-          </>
+          <ButtonLink href={newPatientHref(query)}>
+            <UserPlus className="size-5" aria-hidden />
+            Crear paciente
+          </ButtonLink>
         }
       />
     );

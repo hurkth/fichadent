@@ -62,6 +62,7 @@ export function PatientForm({ mode, patientId, recordLabel, conditions, defaultV
       address: '',
       occupation: '',
       marital_status: null,
+      legacy_record_number: '',
       ...defaultValues,
       conditions: conditions.map((c) => ({ conditionId: c.conditionId, active: c.active, detail: c.detail ?? '' })),
     },
@@ -170,8 +171,11 @@ export function PatientForm({ mode, patientId, recordLabel, conditions, defaultV
             <Field label="Domicilio" htmlFor="address" className="sm:col-span-2">
               <Input id="address" {...register('address')} />
             </Field>
-            <Field label="Ocupación" htmlFor="occupation" className="sm:col-span-2">
+            <Field label="Ocupación" htmlFor="occupation">
               <Input id="occupation" {...register('occupation')} />
+            </Field>
+            <Field label="N.º de historia en papel · opcional" htmlFor="legacy_record_number" hint={<span className="font-semibold text-ink-muted">Si ya tenía ficha física, para encontrarla también por ese número.</span>}>
+              <Input id="legacy_record_number" placeholder="Ej. H-0128" {...register('legacy_record_number')} />
             </Field>
           </div>
           <div className="flex flex-col gap-2.5">

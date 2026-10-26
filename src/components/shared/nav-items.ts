@@ -1,4 +1,4 @@
-import { CalendarDays, ScanLine, Users, type LucideIcon } from 'lucide-react';
+import { CalendarDays, House, Users, type LucideIcon } from 'lucide-react';
 
 export interface NavItem {
   href: string;
@@ -9,7 +9,7 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { href: '/', label: 'Pacientes', icon: Users, match: (p) => p === '/' || p.startsWith('/pacientes') },
+  { href: '/', label: 'Inicio', icon: House, match: (p) => p === '/' },
+  { href: '/pacientes', label: 'Pacientes', icon: Users, match: (p) => p.startsWith('/pacientes') },
   { href: '/agenda', label: 'Agenda', icon: CalendarDays, match: (p) => p.startsWith('/agenda') },
-  { href: '/captura', label: 'Captura', icon: ScanLine, match: (p) => p.startsWith('/captura') },
 ];

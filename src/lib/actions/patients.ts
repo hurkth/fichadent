@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import { fullName } from '@/lib/format';
-import { patientSchema, quickCaptureSchema, type PatientFormValues, type QuickCaptureValues } from '@/lib/schemas/patient';
+import { patientSchema, type PatientFormValues } from '@/lib/schemas/patient';
 import type { ActionResult } from '@/types/domain';
 import { dbErrorMessage, fieldErrors } from './errors';
 
@@ -28,6 +28,7 @@ export async function createPatient(input: PatientFormValues): Promise<ActionRes
   }
 
   revalidatePath('/');
+  revalidatePath('/pacientes');
   return { ok: true, data };
 }
 
@@ -58,36 +59,14 @@ export async function updatePatient(id: string, input: PatientFormValues): Promi
   return { ok: true, data: undefined };
 }
 
-/** Archivar (soft delete): desaparece del buscador; nada se borra. */
-export async function archivePatient(id: string): Promise<ActionResult> {
+/** Eliminar paciente: deja de aparecer en listas y buscador; su historia no se borra. */
+export async function deletePatient(id: string): Promise<ActionResult> {
   const supabase = await createClient();
-  const { error } = await supabase.from('patients').update({ deleted_at: new Date().toISOString() }).eq('id', id);
-  if (error) return { ok: false, error: dbErrorMessage(error) };
+  const { error } = await supabase.rpc('delete_patient', { p_id: id });
+  if (error) return { ok: false, error: error.code === 'P0002' ? 'El paciente ya no existe.' : dbErrorMessage(error) };
   revalidatePath('/');
-  return { ok: true, data: undefined };
-}
-
-/** F05 · Captura rápida: 4 datos + N.º en papel. Las fotos se suben después desde el cliente. */
-export async function quickCapture(input: QuickCaptureValues): Promise<ActionResult<Created>> {
-  const parsed = quickCaptureSchema.safeParse(input);
-  if (!parsed.success) return { ok: false, error: 'Revisa los campos marcados.', fieldErrors: fieldErrors(parsed.error) };
-
-  const supabase = await createClient();
-  const { data, error } = await supabase.from('patients').insert(parsed.data).select('id, record_number').single();
-  if (error) return { ok: false, error: dbErrorMessage(error) };
-
-  revalidatePath('/');
-  return { ok: true, data };
-}
-
-/** F05 · Deshacer la última captura: archiva paciente y archivos. */
-export async function undoQuickCapture(id: string): Promise<ActionResult> {
-  const supabase = await createClient();
-  const now = new Date().toISOString();
-  const { error } = await supabase.from('patients').update({ deleted_at: now }).eq('id', id);
-  if (error) return { ok: false, error: dbErrorMessage(error) };
-  await supabase.from('files').update({ deleted_at: now }).eq('patient_id', id);
-  revalidatePath('/');
+  revalidatePath('/pacientes');
+  revalidatePath('/agenda');
   return { ok: true, data: undefined };
 }
 

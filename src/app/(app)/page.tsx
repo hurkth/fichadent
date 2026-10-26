@@ -1,6 +1,7 @@
 import { HomeHeader } from '@/components/features/search/home-header';
 import { HomeSearch } from '@/components/features/search/home-search';
 import { RecentPatients } from '@/components/features/search/recent-patients';
+import { PaperRecordsNote } from '@/components/shared/paper-records-note';
 import { TodayAppointmentsCard } from '@/components/features/search/today-appointments-card';
 import { getRecentPatients, searchPatients } from '@/lib/data/patients';
 
@@ -16,7 +17,12 @@ export default async function HomePage({ searchParams }: { searchParams: Promise
         initialQuery={q}
         initialResults={initialResults}
         recent={<RecentPatients patients={recent} />}
-        aside={<TodayAppointmentsCard />}
+        aside={
+          <div className="flex flex-col gap-4">
+            <TodayAppointmentsCard />
+            <PaperRecordsNote />
+          </div>
+        }
       />
     </main>
   );

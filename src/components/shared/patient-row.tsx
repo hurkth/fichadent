@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import type { ReactNode } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { formatShortDate, fullName } from '@/lib/format';
@@ -13,13 +14,15 @@ export interface PatientRowProps {
   href: string;
   /** "recent": compacta, botones de ícono y fecha de última visita. "result": con edad y botones con texto. */
   variant?: 'recent' | 'result';
+  /** Acciones extra al final (ej. eliminar en la lista de pacientes). */
+  extra?: ReactNode;
 }
 
 /**
  * Fila de paciente (Inicio, resultados, agenda).
  * Tablet: una línea. Móvil: tarjeta apilada con botones a todo el ancho.
  */
-export function PatientRow({ patient, href, variant = 'result' }: PatientRowProps) {
+export function PatientRow({ patient, href, variant = 'result', extra }: PatientRowProps) {
   const name = fullName(patient);
   const recent = variant === 'recent';
 
@@ -58,6 +61,7 @@ export function PatientRow({ patient, href, variant = 'result' }: PatientRowProp
 
       <ContactActions phone={patient.phone} name={name} variant="stretch" className="md:hidden" />
       <ContactActions phone={patient.phone} name={name} variant={recent ? 'icon' : 'full'} className="hidden md:flex" />
+      {extra ? <div className="flex justify-end md:shrink-0">{extra}</div> : null}
     </Card>
   );
 }
