@@ -9,6 +9,27 @@ export const REMEMBER_COOKIE = 'fd_remember'; // persistente: 30 días
 
 const PUBLIC_PATHS = ['/login', '/registro', '/reset-password', '/auth'];
 
+/** Páginas de marketing (landing, SEO). Se sirven sin sesión y sin tocar Supabase. */
+const MARKETING_PATHS = [
+  '/precios',
+  '/software-dental',
+  '/historia-clinica-odontologica',
+  '/agenda-para-dentistas',
+  '/blog',
+  '/privacidad',
+  '/terminos',
+];
+const MARKETING_FILES = ['/sitemap.xml', '/robots.txt', '/manifest.webmanifest'];
+
+export function isMarketingPath(path: string): boolean {
+  return (
+    path === '/' ||
+    MARKETING_FILES.includes(path) ||
+    path.startsWith('/opengraph-image') ||
+    MARKETING_PATHS.some((p) => path === p || path.startsWith(`${p}/`))
+  );
+}
+
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -32,7 +53,7 @@ export async function updateSession(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
-  const isPublic = PUBLIC_PATHS.some((p) => path === p || path.startsWith(`${p}/`));
+  const isPublic = PUBLIC_PATHS.some((p) => path === p || path.startsWith(`${p}/`)) || isMarketingPath(path);
 
   const redirectTo = (pathname: string, search = '') => {
     const url = request.nextUrl.clone();
@@ -56,8 +77,10 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  if (user && (path === '/login' || path === '/registro')) {
-    return redirectTo('/');
+  // Con sesión: el login, el registro y la landing llevan directo al consultorio.
+  if (user && (path === '/' || path === '/login' || path === '/registro')) {
+    const keep = request.cookies.has(REMEMBER_COOKIE) || request.cookies.has(SESSION_COOKIE);
+    if (keep) return redirectTo('/inicio');
   }
 
   return response;

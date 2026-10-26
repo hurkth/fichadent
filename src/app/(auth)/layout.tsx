@@ -1,4 +1,7 @@
+import type { Metadata } from 'next';
 import { BrandPanel } from '@/components/features/auth/brand-panel';
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 import { Logo } from '@/components/ui/logo';
 
 /** Login y recuperación: panel de marca (tablet) + formulario. */

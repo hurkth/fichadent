@@ -117,3 +117,84 @@
     text-transform: uppercase;
   }
 }
+
+/* ------------------------------------------------------------------
+   iOS 27 · Liquid Glass (docs/specs/03-rediseno-ios27.md §2.4)
+------------------------------------------------------------------- */
+@layer components {
+  .glass {
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.66), rgb(255 255 255 / 0.3));
+    -webkit-backdrop-filter: blur(30px) saturate(190%);
+    backdrop-filter: blur(30px) saturate(190%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.95),
+      inset 0 -1px 0 rgb(255 255 255 / 0.35),
+      0 12px 30px rgb(20 40 60 / 0.1);
+  }
+  /* Tarjetas largas de la landing: sin blur (rendimiento en móviles). */
+  .glass-soft {
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.78), rgb(255 255 255 / 0.5));
+    box-shadow:
+      inset 0 1px 0 #fff,
+      0 14px 34px rgb(20 40 60 / 0.08);
+  }
+  .glass-float {
+    background: linear-gradient(135deg, rgb(255 255 255 / 0.8), rgb(255 255 255 / 0.45));
+    -webkit-backdrop-filter: blur(30px) saturate(190%);
+    backdrop-filter: blur(30px) saturate(190%);
+    box-shadow:
+      inset 0 1px 0 #fff,
+      inset 0 -1px 0 rgb(255 255 255 / 0.4),
+      0 16px 40px rgb(20 40 60 / 0.16);
+  }
+  .glass-lens {
+    background: linear-gradient(
+      145deg,
+      color-mix(in oklab, var(--color-brand-700) 88%, white),
+      color-mix(in oklab, var(--color-brand-700) 65%, black)
+    );
+    color: #fff;
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.45),
+      inset 0 -1px 0 rgb(255 255 255 / 0.15),
+      0 18px 40px color-mix(in oklab, var(--color-brand-700) 38%, transparent);
+  }
+  .btn-glow {
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.4),
+      0 14px 30px color-mix(in oklab, var(--color-brand-700) 36%, transparent);
+  }
+  .marketing-backdrop {
+    background:
+      radial-gradient(900px 640px at 0% 0%, color-mix(in oklab, var(--color-brand-700) 50%, transparent), transparent 68%),
+      radial-gradient(760px 600px at 100% 4%, rgb(255 170 130 / 0.6), transparent 68%),
+      radial-gradient(900px 700px at 80% 38%, rgb(140 160 255 / 0.4), transparent 70%),
+      radial-gradient(900px 700px at 0% 62%, color-mix(in oklab, var(--color-brand-700) 28%, transparent), transparent 70%),
+      radial-gradient(900px 700px at 100% 92%, rgb(255 170 130 / 0.45), transparent 70%),
+      #eceef0;
+  }
+  .font-apple {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter Variable', system-ui, sans-serif;
+    letter-spacing: -0.015em;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-float {
+    background: rgb(255 255 255 / 0.94);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .glass,
+  .glass-float,
+  .glass-soft {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .marketing-backdrop {
+    background: var(--color-bg);
+  }
+}

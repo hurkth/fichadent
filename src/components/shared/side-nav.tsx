@@ -18,7 +18,7 @@ export function SideNav() {
       aria-label="Principal"
       className="sticky top-0 hidden h-dvh w-[104px] shrink-0 flex-col items-center gap-2 border-r border-line-card bg-surface py-5 md:flex"
     >
-      <Link href="/" aria-label={`${clinic.name}, ir al inicio`} className="mb-3 flex items-center justify-center no-underline">
+      <Link href="/inicio" aria-label={`${clinic.name}, ir al inicio`} className="mb-3 flex items-center justify-center no-underline">
         <ClinicLogo url={clinic.logoUrl} name={clinic.name} size={60} />
       </Link>
       {NAV_ITEMS.map(({ href, label, icon: Icon, match }) => {

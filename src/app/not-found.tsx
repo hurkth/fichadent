@@ -9,7 +9,7 @@ export default function NotFound() {
         icon={SearchX}
         title="Esta página no existe"
         description="Revisa el enlace o vuelve al inicio."
-        actions={<ButtonLink href="/">Ir al inicio</ButtonLink>}
+        actions={<ButtonLink href="/inicio">Ir al inicio</ButtonLink>}
         className="w-full max-w-lg"
       />
     </main>

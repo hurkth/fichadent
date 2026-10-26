@@ -1,5 +1,7 @@
 # Spec 04 · Landing pública + SEO
 
+> **Estado:** fases 1 (rutas: app en `/inicio`) y 2 (landing, metadatos, JSON-LD, sitemap, robots, manifest, imagen OG) **implementadas**. Pendiente: fases 3 (páginas por función y ciudad), 4 (blog) y la captura real para el hero (hoy la tablet está dibujada con HTML).
+
 > Fuente visual: `design/screens/20-landing.dc.html` (artboard «Landing pública · fichadent.com» del canvas, página fluida, ancho de diseño 1440).
 > Estilo: el mismo lenguaje iOS 27 Liquid Glass de `03-rediseno-ios27.md` (tokens `.glass`, `.glass-float`, `.glass-lens`, `.app-backdrop`). **Implementar después de la fase 1 de la spec 03** (tokens), porque los reutiliza.
 > Objetivo: que un odontólogo que busca en Google «software dental», «historia clínica odontológica» o «agenda para dentistas» llegue, entienda el producto en 5 segundos y se registre en la prueba gratis.

@@ -37,7 +37,7 @@ export async function createPatient(input: PatientFormValues, appointmentId?: st
     revalidatePath('/agenda');
   }
 
-  revalidatePath('/');
+  revalidatePath('/inicio');
   revalidatePath('/pacientes');
   return { ok: true, data };
 }
@@ -65,7 +65,7 @@ export async function updatePatient(id: string, input: PatientFormValues): Promi
   }
 
   revalidatePath(`/pacientes/${id}`);
-  revalidatePath('/');
+  revalidatePath('/inicio');
   return { ok: true, data: undefined };
 }
 
@@ -74,7 +74,7 @@ export async function deletePatient(id: string): Promise<ActionResult> {
   const supabase = await createClient();
   const { error } = await supabase.rpc('delete_patient', { p_id: id });
   if (error) return { ok: false, error: error.code === 'P0002' ? 'El paciente ya no existe.' : dbErrorMessage(error) };
-  revalidatePath('/');
+  revalidatePath('/inicio');
   revalidatePath('/pacientes');
   revalidatePath('/agenda');
   return { ok: true, data: undefined };

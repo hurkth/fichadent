@@ -34,7 +34,7 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
   // El consultorio activo lo valida el layout de la app:
   // si falta, redirige a /auth/signout → /login?error=sin-acceso.
   await setSessionCookies(remember);
-  redirect('/');
+  redirect('/inicio');
 }
 
 /** Cookies de "mantener la sesión". `secure` solo en HTTPS (en http://localhost se descartaría). */
@@ -74,7 +74,7 @@ export async function signUp(_prev: SignUpState, formData: FormData): Promise<Si
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: meta, emailRedirectTo: `${origin}/auth/callback?next=/` },
+    options: { data: meta, emailRedirectTo: `${origin}/auth/callback?next=/inicio` },
   });
 
   if (error) {
@@ -137,5 +137,5 @@ export async function updatePassword(_prev: ResetState, formData: FormData): Pro
 
   const store = await cookies();
   store.set(SESSION_COOKIE, '1', { httpOnly: true, sameSite: 'lax', path: '/' });
-  redirect('/');
+  redirect('/inicio');
 }

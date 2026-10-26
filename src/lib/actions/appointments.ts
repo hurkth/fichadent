@@ -11,7 +11,7 @@ const STATUSES: AppointmentStatus[] = ['scheduled', 'confirmed', 'done', 'no_sho
 
 function revalidateAgenda(patientId?: string | null) {
   revalidatePath('/agenda');
-  revalidatePath('/');
+  revalidatePath('/inicio');
   if (patientId) revalidatePath(`/pacientes/${patientId}`);
 }
 

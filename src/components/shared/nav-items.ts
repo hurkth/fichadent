@@ -9,7 +9,7 @@ export interface NavItem {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { href: '/', label: 'Inicio', icon: House, match: (p) => p === '/' },
+  { href: '/inicio', label: 'Inicio', icon: House, match: (p) => p === '/inicio' },
   { href: '/pacientes', label: 'Pacientes', icon: Users, match: (p) => p.startsWith('/pacientes') },
   { href: '/agenda', label: 'Agenda', icon: CalendarDays, match: (p) => p.startsWith('/agenda') },
 ];
