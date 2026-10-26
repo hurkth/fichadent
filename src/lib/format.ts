@@ -147,3 +147,26 @@ export function nameInitials(name: string): string {
   const second = words.length > 1 ? (words[1]?.charAt(0) ?? '') : '';
   return `${first}${second}`.toUpperCase() || '?';
 }
+
+/** 80 → "S/ 80" · 80.5 → "S/ 80.50" · 1200 → "S/ 1,200". null → "". */
+export function formatSoles(amount: number | null | undefined): string {
+  if (amount === null || amount === undefined || Number.isNaN(amount)) return '';
+  const whole = Number.isInteger(amount);
+  return `S/ ${amount.toLocaleString('en-US', { minimumFractionDigits: whole ? 0 : 2, maximumFractionDigits: 2 })}`;
+}
+
+/** "80", "80,50", "S/ 1,200.5" → número. Vacío → null. Inválido → NaN. */
+export function parseSoles(text: string): number | null {
+  const clean = text.replace(/s\/|\s/gi, '');
+  if (clean === '') return null;
+  // "1.200,50" o "1,200.50": el último separador es el decimal si tiene 1-2 dígitos detrás.
+  const m = clean.match(/^(\d{1,3}(?:[.,]\d{3})*|\d+)(?:[.,](\d{1,2}))?$/);
+  if (!m) return Number.NaN;
+  const int = m[1]!.replace(/[.,]/g, '');
+  return Number(m[2] ? `${int}.${m[2]}` : int);
+}
+
+/** Suma de precios; ignora los null. */
+export function sumPrices(items: { price?: number | null }[]): number {
+  return items.reduce((acc, t) => acc + (t.price ?? 0), 0);
+}

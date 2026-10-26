@@ -41,6 +41,8 @@ export async function createVisit(patientId: string, input: VisitRawInput): Prom
       tooth,
       status: t.status,
       notes: t.notes || null,
+      // Sin precio → la base usa el precio del consultorio (trigger de 0003).
+      ...(t.price !== null && t.price !== undefined ? { price: t.price } : {}),
     })),
   );
 
@@ -54,7 +56,7 @@ export async function createVisit(patientId: string, input: VisitRawInput): Prom
   }
 
   revalidatePath(`/pacientes/${patientId}`);
-  revalidatePath('/');
+  revalidatePath('/inicio');
   return { ok: true, data: { id: created.id, count: rows.length } };
 }
 

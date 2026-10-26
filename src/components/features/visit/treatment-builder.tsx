@@ -5,13 +5,14 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { SegmentedControl } from '@/components/ui/segmented-control';
-import { Textarea } from '@/components/ui/input';
+import { Input, Textarea } from '@/components/ui/input';
 import { ServicePicker } from '@/components/shared/service-picker';
 import { ToothPicker } from '@/components/shared/tooth-picker';
 import { TREATMENT_STATUS, TREATMENT_STATUS_ORDER } from '@/lib/constants';
+import { formatSoles, parseSoles } from '@/lib/format';
 import type { DraftTreatment, Service, TreatmentStatus } from '@/types/domain';
 
-type ServiceOption = Pick<Service, 'id' | 'name' | 'category' | 'requires_tooth' | 'sort_order'>;
+type ServiceOption = Pick<Service, 'id' | 'name' | 'category' | 'requires_tooth' | 'sort_order'> & { price?: number | null };
 
 function Step({ n, children }: { n: number; children: React.ReactNode }) {
   return (
@@ -29,7 +30,9 @@ export function TreatmentBuilder({ services, onAdd }: { services: ServiceOption[
   const [wholeMouth, setWholeMouth] = useState(false);
   const [status, setStatus] = useState<TreatmentStatus>('done');
   const [notes, setNotes] = useState('');
+  const [priceText, setPriceText] = useState('');
   const [error, setError] = useState<string>();
+  const [priceError, setPriceError] = useState<string>();
 
   const service = services.find((s) => s.id === serviceId);
 
@@ -37,6 +40,11 @@ export function TreatmentBuilder({ services, onAdd }: { services: ServiceOption[
     if (!service) return;
     if (service.requires_tooth && !wholeMouth && teeth.length === 0) {
       setError(`Elige la pieza para "${service.name}" o marca boca completa`);
+      return;
+    }
+    const price = parseSoles(priceText);
+    if (price !== null && (Number.isNaN(price) || price < 0)) {
+      setPriceError('Escribe el precio en soles, ej. 80 o 80.50');
       return;
     }
     onAdd({
@@ -47,13 +55,16 @@ export function TreatmentBuilder({ services, onAdd }: { services: ServiceOption[
       wholeMouth: wholeMouth || teeth.length === 0,
       status,
       notes: notes.trim() || undefined,
+      price,
     });
     setServiceId(null);
     setTeeth([]);
     setWholeMouth(false);
     setStatus('done');
     setNotes('');
+    setPriceText('');
     setError(undefined);
+    setPriceError(undefined);
   };
 
   return (
@@ -68,6 +79,9 @@ export function TreatmentBuilder({ services, onAdd }: { services: ServiceOption[
           onChange={(id) => {
             setServiceId(id);
             setError(undefined);
+            setPriceError(undefined);
+            const p = services.find((s) => s.id === id)?.price;
+            setPriceText(p !== null && p !== undefined ? String(p) : '');
           }}
         />
       </div>
@@ -108,6 +122,38 @@ export function TreatmentBuilder({ services, onAdd }: { services: ServiceOption[
             <label htmlFor="treatment-notes">Notas</label>
           </Step>
           <Textarea id="treatment-notes" rows={3} placeholder="Hallazgos, materiales, indicaciones…" value={notes} onChange={(e) => setNotes(e.target.value)} />
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <Step n={5}>
+          <label htmlFor="treatment-price">Precio</label>{' '}
+          <span className="font-semibold text-ink-muted">· {teeth.length > 1 && !wholeMouth ? 'por pieza · ' : ''}lo puedes cambiar</span>
+        </Step>
+        <div className="flex flex-wrap items-center gap-3">
+          <Input
+            id="treatment-price"
+            inputMode="decimal"
+            prefix="S/"
+            placeholder="Sin precio"
+            value={priceText}
+            invalid={!!priceError}
+            onChange={(e) => {
+              setPriceText(e.target.value);
+              setPriceError(undefined);
+            }}
+            className="tabular md:max-w-[220px]"
+            aria-describedby="treatment-price-help"
+          />
+          <span id="treatment-price-help" className="text-[13px] font-semibold text-ink-muted">
+            {priceError ? (
+              <span role="alert" className="font-bold text-alert">{priceError}</span>
+            ) : teeth.length > 1 && !wholeMouth && parseSoles(priceText) ? (
+              `${teeth.length} piezas · ${formatSoles((parseSoles(priceText) ?? 0) * teeth.length)}`
+            ) : (
+              'Tu precio viene de Ajustes › Precios.'
+            )}
+          </span>
         </div>
       </div>
 

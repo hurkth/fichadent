@@ -1,10 +1,11 @@
 'use client';
 
 import { Chip } from '@/components/ui/chip';
+import { formatSoles } from '@/lib/format';
 import type { Service } from '@/types/domain';
 
 export interface ServicePickerProps {
-  services: Pick<Service, 'id' | 'name' | 'category' | 'sort_order'>[];
+  services: (Pick<Service, 'id' | 'name' | 'category' | 'sort_order'> & { price?: number | null })[];
   value: string | null;
   onChange: (serviceId: string) => void;
 }
@@ -25,6 +26,9 @@ export function ServicePicker({ services, value, onChange }: ServicePickerProps)
             {items.map((s) => (
               <Chip key={s.id} role="radio" aria-checked={s.id === value} selected={s.id === value} onClick={() => onChange(s.id)}>
                 {s.name}
+                {s.price !== null && s.price !== undefined ? (
+                  <span className="tabular text-[13px] font-bold text-ink-muted">{formatSoles(s.price)}</span>
+                ) : null}
               </Chip>
             ))}
           </div>

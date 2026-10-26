@@ -1,19 +1,51 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { PageHeader } from '@/components/shared/page-header';
 import { ClinicSettingsForm } from '@/components/features/settings/clinic-settings-form';
+import { ServicePricesForm } from '@/components/features/settings/service-prices-form';
+import { cn } from '@/lib/cn';
+import { getServiceSettings } from '@/lib/data/catalogs';
 import { getSession } from '@/lib/data/session';
 
 export const metadata: Metadata = { title: 'Ajustes' };
 
-/** Ajustes del consultorio: datos, color y logo. */
-export default async function SettingsPage() {
+const SECTIONS = [
+  { value: 'consultorio', label: 'Consultorio', hint: 'Nombre, logo y color' },
+  { value: 'precios', label: 'Precios', hint: 'Tus intervenciones' },
+] as const;
+
+/** Ajustes del consultorio: datos, logo y color · precios de intervenciones. */
+export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ seccion?: string }> }) {
   const session = await getSession();
   if (!session) redirect('/auth/signout');
+  const { seccion } = await searchParams;
+  const current = seccion === 'precios' ? 'precios' : 'consultorio';
+  const services = current === 'precios' ? await getServiceSettings() : [];
+
   return (
     <main className="flex flex-1 flex-col">
-      <PageHeader title="Ajustes del consultorio" subtitle="Así se verá tu consultorio en Fichadent." back={{ href: '/', label: 'Inicio' }} />
-      <ClinicSettingsForm session={session} />
+      <PageHeader title="Ajustes del consultorio" subtitle="Personaliza Fichadent a tu consultorio." back={{ href: '/inicio', label: 'Inicio' }}>
+        <nav aria-label="Secciones de ajustes" className="mt-2 flex gap-1 self-start rounded-full bg-bg p-1">
+          {SECTIONS.map((s) => {
+            const on = s.value === current;
+            return (
+              <Link
+                key={s.value}
+                href={s.value === 'consultorio' ? '/ajustes' : `/ajustes?seccion=${s.value}`}
+                aria-current={on ? 'page' : undefined}
+                className={cn(
+                  'flex min-h-11 items-center rounded-full px-5 text-[15px] no-underline',
+                  on ? 'bg-surface font-extrabold text-ink shadow-[0_2px_8px_rgba(0,0,0,.08)]' : 'font-semibold text-ink-muted hover:text-ink',
+                )}
+              >
+                {s.label}
+              </Link>
+            );
+          })}
+        </nav>
+      </PageHeader>
+      {current === 'precios' ? <ServicePricesForm services={services} /> : <ClinicSettingsForm session={session} />}
     </main>
   );
 }

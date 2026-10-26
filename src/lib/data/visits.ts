@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import type { TreatmentWithService, VisitWithTreatments } from '@/types/domain';
 
 const TREATMENT_COLUMNS =
-  'id, clinic_id, patient_id, visit_id, service_id, tooth, status, notes, deleted_at, created_by, created_at, updated_at, service:services(id, name)';
+  'id, clinic_id, patient_id, visit_id, service_id, tooth, status, notes, price, deleted_at, created_by, created_at, updated_at, service:services(id, name)';
 
 /** Visitas con sus tratamientos, de la más reciente a la más antigua. */
 export const getVisits = cache(async (patientId: string): Promise<VisitWithTreatments[]> => {

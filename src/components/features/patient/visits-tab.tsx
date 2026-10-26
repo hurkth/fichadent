@@ -10,7 +10,7 @@ import { EmptyState } from '@/components/shared/empty-state';
 import { TreatmentItem } from '@/components/shared/treatment-item';
 import { updateTreatmentStatus } from '@/lib/actions/visits';
 import { cn } from '@/lib/cn';
-import { dayParts, pluralize } from '@/lib/format';
+import { dayParts, formatSoles, pluralize, sumPrices } from '@/lib/format';
 import { toothLabel } from '@/lib/teeth';
 import type { TreatmentStatus, VisitWithTreatments } from '@/types/domain';
 
@@ -95,10 +95,16 @@ export function VisitsTab({ patientId, visits, paperPages, paperDate }: VisitsTa
                     toothText={toothLabel(t.tooth)}
                     status={t.status}
                     notes={t.notes}
+                    price={t.price}
                     busy={pendingId === t.id}
                     onStatusChange={(s) => changeStatus(t.id, s)}
                   />
                 ))}
+                {v.treatments.some((t) => t.price !== null) ? (
+                  <p className="m-0 flex justify-end gap-2 text-[15px] font-bold text-ink-muted">
+                    Total <span className="tabular font-extrabold text-ink">{formatSoles(sumPrices(v.treatments))}</span>
+                  </p>
+                ) : null}
                 {v.notes ? <p className="m-0 text-[15px] leading-relaxed font-medium text-ink-muted">{v.notes}</p> : null}
               </TimelineEntry>
             );

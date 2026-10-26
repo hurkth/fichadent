@@ -40,7 +40,7 @@ export function SummaryTab({ patientId, lastVisit, pending, recentFiles }: Summa
           <SectionCard title="Última visita" meta={formatDate(lastVisit.visit_date)} action={{ label: 'Ver todas', href: `${base}?tab=visitas` }}>
             {lastVisit.reason ? <p className="m-0 text-[15px] font-bold md:text-[17px]">{lastVisit.reason}</p> : null}
             {lastVisit.treatments.map((t) => (
-              <TreatmentItem key={t.id} name={t.service.name} toothText={toothLabel(t.tooth)} status={t.status} size="lg" />
+              <TreatmentItem key={t.id} name={t.service.name} toothText={toothLabel(t.tooth)} status={t.status} price={t.price} size="lg" />
             ))}
             {lastVisit.notes ? <p className="m-0 text-[15px] leading-relaxed font-medium text-ink-muted">{lastVisit.notes}</p> : null}
           </SectionCard>

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { SegmentedControl } from '@/components/ui/segmented-control';
 import { TREATMENT_STATUS, TREATMENT_STATUS_ORDER } from '@/lib/constants';
 import { cn } from '@/lib/cn';
+import { formatSoles } from '@/lib/format';
 import type { TreatmentStatus } from '@/types/domain';
 import { TreatmentStatusPill } from './status-pills';
 
@@ -20,10 +21,12 @@ export interface TreatmentItemProps {
   onStatusChange?: (status: TreatmentStatus) => void;
   busy?: boolean;
   size?: 'md' | 'lg';
+  /** Precio (total de la fila). null/undefined = no se muestra. */
+  price?: number | null;
 }
 
 /** Fila gris: tratamiento · pieza · estado. Resumen, timeline y Nueva visita. */
-export function TreatmentItem({ name, toothText, status, notes, onRemove, onStatusChange, busy, size = 'md' }: TreatmentItemProps) {
+export function TreatmentItem({ name, toothText, status, notes, onRemove, onStatusChange, busy, size = 'md', price }: TreatmentItemProps) {
   const [editing, setEditing] = useState(false);
   const editable = Boolean(onStatusChange);
 
@@ -34,6 +37,7 @@ export function TreatmentItem({ name, toothText, status, notes, onRemove, onStat
         {notes ? <span className="mt-0.5 block text-[13px] font-medium text-ink-muted">{notes}</span> : null}
       </span>
       <span className="text-[13px] font-bold text-ink-muted md:text-sm">{toothText}</span>
+      {price !== null && price !== undefined ? <span className="tabular text-[15px] font-extrabold">{formatSoles(price)}</span> : null}
       <TreatmentStatusPill status={status} />
     </>
   );

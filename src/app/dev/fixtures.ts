@@ -64,6 +64,11 @@ export const fxConditions: PatientCondition[] = [
   cond('pregnant', 'Embarazada', false, null, 9),
 ];
 
+const PRICES: Record<string, number> = {
+  'Resina simple': 80, 'Resina compuesta': 120, 'Resina compleja': 150, 'Endodoncia unirradicular': 350, 'Endodoncia multirradicular': 550,
+  'Biopulpotomía': 180, Perno: 200, 'Prótesis fija': 900, Profilaxis: 80, Destartraje: 100, 'Blanqueamiento dental': 450, Exodoncia: 120,
+  'Rayos X': 30, 'Consulta / evaluación': 50,
+};
 const svc = (n: number, name: string) => ({ id: uid(200 + n), name });
 const tr = (n: number, visit: number, service: { id: string; name: string }, tooth: string | null, status: 'planned' | 'in_progress' | 'done') => ({
   id: uid(300 + n),
@@ -75,6 +80,7 @@ const tr = (n: number, visit: number, service: { id: string; name: string }, too
   tooth,
   status,
   notes: null,
+  price: PRICES[service.name] ?? null,
   deleted_at: null,
   created_by: null,
   created_at: `2026-09-0${n}T10:00:00Z`,
@@ -137,8 +143,17 @@ export const fxFiles: FileWithUrl[] = [
   file(6, 'paper_record', null, '2025-03-03T15:00:00Z', 2),
 ];
 
-type Svc = Pick<Service, 'id' | 'name' | 'category' | 'requires_tooth' | 'sort_order'>;
-const s = (n: number, name: string, category: string, requires_tooth: boolean): Svc => ({ id: uid(200 + n), name, category, requires_tooth, sort_order: n });
+type Svc = Pick<Service, 'id' | 'name' | 'category' | 'requires_tooth' | 'sort_order'> & { price: number | null; hidden: boolean; own: boolean };
+const s = (n: number, name: string, category: string, requires_tooth: boolean): Svc => ({
+  id: uid(200 + n),
+  name,
+  category,
+  requires_tooth,
+  sort_order: n,
+  price: PRICES[name] ?? null,
+  hidden: false,
+  own: false,
+});
 
 export const fxServices: Svc[] = [
   s(1, 'Resina simple', 'Restauraciones', true),

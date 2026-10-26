@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, Tags } from 'lucide-react';
 import { signOut } from '@/lib/actions/auth';
 import { cn } from '@/lib/cn';
 import { nameInitials } from '@/lib/format';
@@ -56,6 +56,14 @@ export function UserMenu({ size = 'md' }: { size?: 'sm' | 'md' }) {
           >
             <Settings className="size-5" aria-hidden />
             Ajustes del consultorio
+          </Link>
+          <Link
+            href="/ajustes?seccion=precios"
+            onClick={() => setOpen(false)}
+            className="flex min-h-12 items-center gap-3 rounded-xl px-3 text-base font-bold text-ink no-underline hover:bg-bg"
+          >
+            <Tags className="size-5" aria-hidden />
+            Precios de intervenciones
           </Link>
           <form action={signOut}>
             <button

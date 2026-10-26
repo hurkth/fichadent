@@ -8,6 +8,7 @@ export const draftTreatmentSchema = z.object({
   wholeMouth: z.boolean(),
   status: z.enum(['planned', 'in_progress', 'done']),
   notes: z.string().trim().max(1000).optional(),
+  price: z.number().min(0).max(999999).nullable().optional(),
 });
 
 /** F06 · Nueva visita */

@@ -14,7 +14,7 @@ import { PageHeader } from '@/components/shared/page-header';
 import { TreatmentItem } from '@/components/shared/treatment-item';
 import { createVisit } from '@/lib/actions/visits';
 import { VISIT_REASONS } from '@/lib/constants';
-import { formatCompactDate, pluralize, todayISO } from '@/lib/format';
+import { formatCompactDate, formatSoles, pluralize, todayISO } from '@/lib/format';
 import { teethLabel } from '@/lib/teeth';
 import type { DraftTreatment, Service } from '@/types/domain';
 import { TreatmentBuilder } from './treatment-builder';
@@ -22,7 +22,7 @@ import { TreatmentBuilder } from './treatment-builder';
 export interface VisitFormProps {
   patient: { id: string; name: string; shortName: string; record_number: string };
   alerts: string[];
-  services: Pick<Service, 'id' | 'name' | 'category' | 'requires_tooth' | 'sort_order'>[];
+  services: (Pick<Service, 'id' | 'name' | 'category' | 'requires_tooth' | 'sort_order'> & { price?: number | null })[];
   appointmentId?: string | null;
 }
 
@@ -44,6 +44,10 @@ export function VisitForm({ patient, alerts, services, appointmentId }: VisitFor
   const back = `/pacientes/${patient.id}`;
   const dirty = reason.trim() !== '' || notes.trim() !== '' || items.length > 0;
   const rows = items.reduce((n, t) => n + (t.wholeMouth ? 1 : t.teeth.length), 0);
+  /** Precio de la fila: por pieza × piezas (boca completa = una vez). */
+  const linePrice = (t: DraftTreatment) => (t.price === null ? null : t.price * (t.wholeMouth || t.teeth.length === 0 ? 1 : t.teeth.length));
+  const priced = items.filter((t) => t.price !== null);
+  const total = priced.reduce((acc, t) => acc + (linePrice(t) ?? 0), 0);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -130,6 +134,7 @@ export function VisitForm({ patient, alerts, services, appointmentId }: VisitFor
                 toothText={t.wholeMouth ? 'General' : teethLabel(t.teeth, false)}
                 status={t.status}
                 notes={t.notes}
+                price={linePrice(t)}
                 onRemove={() => setItems((list) => list.filter((x) => x.key !== t.key))}
                 size="lg"
               />
@@ -137,6 +142,12 @@ export function VisitForm({ patient, alerts, services, appointmentId }: VisitFor
           ) : (
             <p className="m-0 text-[15px] font-semibold text-ink-muted">Aún no agregas tratamientos. Elige uno abajo.</p>
           )}
+          {priced.length ? (
+            <div className="flex items-center justify-between border-t border-line-soft pt-3">
+              <span className="text-[15px] font-bold text-ink-muted">Total de la visita{priced.length < items.length ? ' (sin contar los que no tienen precio)' : ''}</span>
+              <span className="tabular text-xl font-extrabold">{formatSoles(total)}</span>
+            </div>
+          ) : null}
           {rows > items.length ? (
             <p className="m-0 text-[13px] font-semibold text-ink-muted">Se guardará un registro por pieza: {rows} en total.</p>
           ) : null}

@@ -59,6 +59,8 @@ export interface DraftTreatment {
   wholeMouth: boolean;
   status: TreatmentStatus;
   notes?: string;
+  /** Precio por pieza (o por el tratamiento si es boca completa). null = sin precio. */
+  price: number | null;
 }
 
 /** Resultado estándar de las Server Actions. */

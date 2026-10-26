@@ -144,8 +144,45 @@ export type Database = {
           sort_order: number;
           active: boolean;
         };
-        Insert: never;
-        Update: never;
+        /** Solo intervenciones propias del consultorio (0003). */
+        Insert: {
+          clinic_id: string;
+          name: string;
+          category: string;
+          requires_tooth?: boolean;
+          default_price?: number | null;
+          sort_order?: number;
+          active?: boolean;
+        };
+        Update: {
+          name?: string;
+          category?: string;
+          requires_tooth?: boolean;
+          default_price?: number | null;
+          sort_order?: number;
+          active?: boolean;
+        };
+        Relationships: [];
+      };
+      /** Precio y visibilidad de cada servicio por consultorio (0003). */
+      clinic_services: {
+        Row: {
+          clinic_id: string;
+          service_id: string;
+          price: number | null;
+          hidden: boolean;
+          updated_at: string;
+        };
+        Insert: {
+          clinic_id?: string;
+          service_id: string;
+          price?: number | null;
+          hidden?: boolean;
+        };
+        Update: {
+          price?: number | null;
+          hidden?: boolean;
+        };
         Relationships: [];
       };
       appointments: {
@@ -223,6 +260,8 @@ export type Database = {
           tooth: string | null;
           status: 'planned' | 'in_progress' | 'done';
           notes: string | null;
+          /** Precio cobrado (0003). null = sin precio. */
+          price: number | null;
           deleted_at: string | null;
           created_by: string | null;
         } & Timestamps;
@@ -233,11 +272,13 @@ export type Database = {
           tooth?: string | null;
           status?: 'planned' | 'in_progress' | 'done';
           notes?: string | null;
+          price?: number | null;
         };
         Update: {
           tooth?: string | null;
           status?: 'planned' | 'in_progress' | 'done';
           notes?: string | null;
+          price?: number | null;
           deleted_at?: string | null;
         };
         Relationships: [];

@@ -3,7 +3,7 @@
  * responde 404 en producción). Sirve para comparar contra design/screens sin Supabase.
  *   /dev/inicio · /dev/resultados · /dev/sin-resultados · /dev/vacio
  *   /dev/ficha?tab=… · /dev/nuevo-paciente · /dev/nueva-visita · /dev/login · /dev/registro
- *   /dev/agenda?vista=dia|semana|mes · /dev/pacientes · /dev/ajustes
+ *   /dev/agenda?vista=dia|semana|mes · /dev/pacientes · /dev/ajustes · /dev/precios
  */
 import { notFound } from 'next/navigation';
 import { Plus } from 'lucide-react';
@@ -28,6 +28,7 @@ import { pendingTreatments } from '@/lib/data/visits';
 import { AgendaView } from '@/components/features/agenda/agenda-view';
 import { SignUpForm } from '@/components/features/auth/sign-up-form';
 import { DeletePatientButton } from '@/components/features/patient/delete-patient-button';
+import { ServicePricesForm } from '@/components/features/settings/service-prices-form';
 import { ClinicSettingsForm } from '@/components/features/settings/clinic-settings-form';
 import { PageHeader } from '@/components/shared/page-header';
 import { PaperRecordsNote } from '@/components/shared/paper-records-note';
@@ -170,6 +171,14 @@ export default async function DevScreen({ params, searchParams }: { params: Prom
         <main className="flex flex-1 flex-col">
           <PageHeader title="Ajustes del consultorio" subtitle="Así se verá tu consultorio en Fichadent." />
           <ClinicSettingsForm session={fxSession} />
+        </main>
+      );
+      break;
+    case 'precios':
+      body = (
+        <main className="flex flex-1 flex-col">
+          <PageHeader title="Ajustes del consultorio" subtitle="Personaliza Fichadent a tu consultorio." />
+          <ServicePricesForm services={fxServices} />
         </main>
       );
       break;
