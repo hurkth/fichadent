@@ -19,7 +19,7 @@ export function Avatar({ initials, size = 'lg', className }: AvatarProps) {
   return (
     <span
       aria-hidden
-      className={cn('flex shrink-0 items-center justify-center rounded-full bg-pink-50 font-extrabold text-pink-800', SIZES[size], className)}
+      className={cn('flex shrink-0 items-center justify-center rounded-full bg-brand-50 font-extrabold text-brand-900', SIZES[size], className)}
     >
       {initials}
     </span>

@@ -31,7 +31,7 @@ export function LinkTabs({ tabs, value, hrefFor, label, className }: LinkTabsPro
             aria-current={on ? 'page' : undefined}
             className={cn(
               'flex min-h-[50px] items-center border-b-[3px] px-3 text-[15px] no-underline md:min-h-[54px] md:px-3.5 md:text-base',
-              on ? 'border-gold-700 font-extrabold text-ink' : 'border-transparent font-semibold text-ink-muted hover:text-ink',
+              on ? 'border-brand-700 font-extrabold text-ink' : 'border-transparent font-semibold text-ink-muted hover:text-ink',
             )}
           >
             {t.shortLabel ? (

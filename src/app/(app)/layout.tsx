@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation';
 import { AppShell } from '@/components/shared/app-shell';
-import { getStaffSession } from '@/lib/data/session';
+import { getSession } from '@/lib/data/session';
 
-/** Toda la app autenticada. Sin fila activa en staff → fuera. */
+/** Toda la app autenticada. Sin consultorio activo → fuera. */
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const session = await getStaffSession();
+  const session = await getSession();
   if (!session) redirect('/auth/signout');
-  return <AppShell session={{ clinicId: session.clinicId, staffName: session.staffName }}>{children}</AppShell>;
+  return <AppShell session={session}>{children}</AppShell>;
 }

@@ -249,6 +249,7 @@ create table public.files (
   storage_path  text not null unique,          -- {clinic_id}/{patient_id}/{file_id}.webp
   mime_type     text,
   size_bytes    bigint,
+  page_number   integer,                       -- historia en papel con varias hojas
   caption       text,
   taken_at      date,
   deleted_at    timestamptz,

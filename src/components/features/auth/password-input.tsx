@@ -6,7 +6,7 @@ import { Eye, EyeOff } from 'lucide-react';
 export function PasswordInput({ id, name, autoComplete }: { id: string; name: string; autoComplete: string }) {
   const [visible, setVisible] = useState(false);
   return (
-    <span className="flex h-[60px] items-center rounded-[14px] border-[1.5px] border-line bg-surface pl-[18px] focus-within:border-gold-700 focus-within:ring-4 focus-within:ring-gold-500/20">
+    <span className="flex h-[60px] items-center rounded-[14px] border-[1.5px] border-line bg-surface pl-[18px] focus-within:border-brand-700 focus-within:ring-4 focus-within:ring-brand-500/20">
       <input
         id={id}
         name={name}

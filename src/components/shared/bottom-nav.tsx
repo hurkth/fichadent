@@ -22,10 +22,10 @@ export function BottomNav() {
             aria-current={on ? 'page' : undefined}
             className={cn(
               'flex min-h-[60px] flex-1 flex-col items-center justify-center gap-1 text-xs font-bold no-underline',
-              on ? 'text-gold-900' : 'text-ink-muted',
+              on ? 'text-brand-900' : 'text-ink-muted',
             )}
           >
-            <span className={cn('flex h-[30px] w-14 items-center justify-center rounded-[15px]', on && 'bg-gold-50')}>
+            <span className={cn('flex h-[30px] w-14 items-center justify-center rounded-[15px]', on && 'bg-brand-50')}>
               <Icon className="size-[22px]" aria-hidden />
             </span>
             {label}

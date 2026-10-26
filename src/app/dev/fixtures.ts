@@ -2,7 +2,7 @@
  * Datos de ejemplo para /dev/* (solo desarrollo). Copian los del diseño
  * para comparar pantalla a pantalla sin conectar Supabase.
  */
-import type { FileWithUrl, Patient, PatientCard, PatientCondition, Service, VisitWithTreatments } from '@/types/domain';
+import type { ClinicSession, FileWithUrl, Patient, PatientCard, PatientCondition, Service, VisitWithTreatments } from '@/types/domain';
 
 const now = '2026-10-05T14:00:00Z';
 const clinic = '00000000-0000-0000-0000-00000000c111';
@@ -115,7 +115,6 @@ const file = (n: number, kind: FileWithUrl['kind'], caption: string | null, crea
   clinic_id: clinic,
   patient_id: uid(1),
   visit_id: null,
-  treatment_id: null,
   kind,
   storage_path: `${clinic}/${uid(1)}/${uid(500 + n)}.webp`,
   mime_type: 'image/webp',
@@ -163,4 +162,21 @@ export const fxServices: Svc[] = [
   s(19, 'Otros', 'Diagnóstico y otros', false),
 ];
 
-export const fxSession = { clinicId: clinic, staffName: 'Dra. Goldent' };
+export const fxSession: ClinicSession = {
+  userId: uid(900),
+  displayName: 'Dra. Lucía Mamani',
+  role: 'owner',
+  email: 'demo@fichadent.pe',
+  clinic: {
+    id: clinic,
+    name: 'Consultorio Dental Sonrisa',
+    phone: '987654321',
+    address: 'Jr. Lima 123, Puno',
+    logoPath: null,
+    logoUrl: null,
+    brandColor: '#0F766E',
+    plan: 'trial',
+    trialEndsAt: '2026-10-10T05:00:00Z',
+    trialDaysLeft: 5,
+  },
+};

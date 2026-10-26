@@ -62,7 +62,7 @@ function ToastView({ item, onDone }: { item: ToastItem; onDone: () => void }) {
         {item.description ? <span className="text-[13px] font-semibold text-line">{item.description}</span> : null}
       </span>
       {item.action ? (
-        <Link href={item.action.href} className="flex min-h-11 items-center px-2 text-sm font-extrabold text-pink-200">
+        <Link href={item.action.href} className="flex min-h-11 items-center px-2 text-sm font-extrabold text-brand-100">
           {item.action.label}
         </Link>
       ) : null}

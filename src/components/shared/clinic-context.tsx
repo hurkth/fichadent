@@ -1,15 +1,13 @@
 'use client';
 
 import { createContext, useContext, type ReactNode } from 'react';
+import type { ClinicSession } from '@/types/domain';
 
-export interface ClinicSession {
-  clinicId: string;
-  staffName: string;
-}
+export type { ClinicSession };
 
 const ClinicContext = createContext<ClinicSession | null>(null);
 
-/** Clínica del usuario logueado; la usa la subida de fotos para armar la ruta en Storage. */
+/** Usuario y consultorio logueados (rutas de Storage, marca, mensajes de WhatsApp). */
 export function ClinicProvider({ value, children }: { value: ClinicSession; children: ReactNode }) {
   return <ClinicContext.Provider value={value}>{children}</ClinicContext.Provider>;
 }

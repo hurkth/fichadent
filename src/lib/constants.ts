@@ -45,9 +45,9 @@ export const CONDITION_PLACEHOLDERS: Record<string, string> = {
 
 export const FILE_KIND: Record<FileKind, { label: string; plural: string; tag: string; className: string }> = {
   xray: { label: 'Radiografía', plural: 'Radiografías', tag: 'RX', className: 'bg-xray text-xray-fg' },
-  photo: { label: 'Foto intraoral', plural: 'Fotos intraorales', tag: 'FOTO', className: 'bg-pink-50 text-pink-800' },
+  photo: { label: 'Foto intraoral', plural: 'Fotos intraorales', tag: 'FOTO', className: 'bg-brand-50 text-brand-900' },
   paper_record: { label: 'Formato en papel', plural: 'Formato en papel', tag: 'PAPEL', className: 'bg-paper text-ink-muted' },
-  consent: { label: 'Consentimiento', plural: 'Consentimientos', tag: 'CONS.', className: 'bg-gold-50 text-gold-900' },
+  consent: { label: 'Consentimiento', plural: 'Consentimientos', tag: 'CONS.', className: 'bg-brand-50 text-brand-900' },
   other: { label: 'Otro archivo', plural: 'Otros', tag: 'OTRO', className: 'bg-surface-2 text-ink-muted' },
 };
 
@@ -61,3 +61,22 @@ export const FILE_FILTERS: { value: FileKind | 'all'; label: string }[] = [
 
 export const STORAGE_BUCKET = 'patient-files';
 export const SIGNED_URL_TTL = 60 * 60;
+
+/** Colores de marca permitidos en Ajustes (todos con buen contraste sobre blanco). */
+export const BRAND_COLORS: { value: string; label: string }[] = [
+  { value: '#0F766E', label: 'Verde azulado' },
+  { value: '#1D4ED8', label: 'Azul' },
+  { value: '#0E7490', label: 'Turquesa' },
+  { value: '#047857', label: 'Verde' },
+  { value: '#7C3AED', label: 'Morado' },
+  { value: '#BE185D', label: 'Fucsia' },
+  { value: '#B91C1C', label: 'Rojo' },
+  { value: '#8A6512', label: 'Dorado' },
+  { value: '#334155', label: 'Gris' },
+];
+
+/**
+ * WhatsApp de Fichadent (ventas / ayuda para digitalizar historias en papel).
+ * Configurable con NEXT_PUBLIC_SALES_WHATSAPP (9 dígitos).
+ */
+export const SALES_WHATSAPP = process.env.NEXT_PUBLIC_SALES_WHATSAPP ?? '';

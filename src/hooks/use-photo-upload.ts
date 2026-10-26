@@ -27,7 +27,7 @@ export interface UploadResult {
  * 1. comprime a WebP · 2. sube a {clinic_id}/{patient_id}/{file_id}.webp · 3. registra en `files`.
  */
 export function usePhotoUpload() {
-  const { clinicId } = useClinic();
+  const clinicId = useClinic().clinic.id;
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
 
   const upload = useCallback(

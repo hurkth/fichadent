@@ -3,7 +3,7 @@ import { cn } from '@/lib/cn';
 
 const base =
   'block w-full rounded-[14px] border-[1.5px] bg-surface text-ink font-semibold outline-none transition-[border-color,box-shadow] ' +
-  'focus:border-gold-700 focus:ring-4 focus:ring-gold-500/20 disabled:bg-bg disabled:text-ink-muted';
+  'focus:border-brand-700 focus:ring-4 focus:ring-brand-500/20 disabled:bg-bg disabled:text-ink-muted';
 
 const sizes = {
   md: 'h-14 px-4 text-[17px]',
@@ -33,7 +33,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     <span
       className={cn(
         'flex w-full items-center overflow-hidden rounded-[14px] border-[1.5px] bg-surface transition-[border-color,box-shadow]',
-        'focus-within:border-gold-700 focus-within:ring-4 focus-within:ring-gold-500/20',
+        'focus-within:border-brand-700 focus-within:ring-4 focus-within:ring-brand-500/20',
         inputSize === 'lg' ? 'h-[60px]' : 'h-14',
         border,
         className,

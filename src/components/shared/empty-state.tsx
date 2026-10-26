@@ -4,8 +4,8 @@ import { cn } from '@/lib/cn';
 
 const TONES = {
   neutral: 'bg-surface-2 text-ink-muted',
-  gold: 'bg-gold-50 text-gold-700',
-  pink: 'bg-pink-50 text-pink-800',
+  gold: 'bg-brand-50 text-brand-700',
+  pink: 'bg-brand-50 text-brand-900',
   alert: 'bg-alert-50 text-alert',
 };
 

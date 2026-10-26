@@ -144,14 +144,14 @@ export function QuickCaptureForm({ nextRecordNumber }: { nextRecordNumber: strin
             Historias antiguas: 4 datos y una foto del formato. El resto se completa después.
           </p>
         </div>
-        <span className="tabular rounded-full bg-gold-50 px-3 py-1.5 text-sm font-extrabold text-gold-900 md:hidden" aria-live="polite">
+        <span className="tabular rounded-full bg-brand-50 px-3 py-1.5 text-sm font-extrabold text-brand-900 md:hidden" aria-live="polite">
           {count} en esta sesión
         </span>
-        <div className="hidden items-center gap-3.5 rounded-[18px] border border-gold-100 bg-gold-50 py-2.5 pr-5 pl-3 md:flex">
-          <span className="tabular flex h-14 min-w-14 items-center justify-center rounded-[14px] bg-gold-700 px-2.5 text-[28px] font-extrabold text-white">
+        <div className="hidden items-center gap-3.5 rounded-[18px] border border-brand-100 bg-brand-50 py-2.5 pr-5 pl-3 md:flex">
+          <span className="tabular flex h-14 min-w-14 items-center justify-center rounded-[14px] bg-brand-700 px-2.5 text-[28px] font-extrabold text-white">
             {count}
           </span>
-          <span className="flex flex-col gap-0.5 text-gold-900">
+          <span className="flex flex-col gap-0.5 text-brand-900">
             <span className="text-[15px] font-extrabold">{count === 1 ? 'historia digitalizada' : 'historias digitalizadas'}</span>
             <span className="text-[13px] font-semibold">en esta sesión</span>
           </span>

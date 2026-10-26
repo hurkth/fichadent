@@ -39,7 +39,7 @@ export function ToothPicker({ value, onChange, wholeMouth, onWholeMouthChange, e
         onClick={() => toggle(tooth)}
         className={cn(
           'tabular size-10 shrink-0 cursor-pointer rounded-[10px] border-[1.5px] text-sm font-extrabold sm:size-11 lg:size-[52px] lg:rounded-xl lg:text-base',
-          on ? 'border-gold-700 bg-gold-700 text-white' : 'border-line bg-surface text-ink',
+          on ? 'border-brand-700 bg-brand-700 text-white' : 'border-line bg-surface text-ink',
         )}
       >
         {tooth}
@@ -68,7 +68,7 @@ export function ToothPicker({ value, onChange, wholeMouth, onWholeMouthChange, e
         {arches.map((arch) => (
           <div key={arch.label} role="group" aria-label={`Arcada ${arch.label.toLowerCase()}`} className="flex items-center gap-1.5 lg:gap-2.5">
             <div className="flex gap-1 lg:gap-[5px]">{arch.right.map(toothButton)}</div>
-            <span aria-hidden className="h-10 w-0.5 shrink-0 rounded-[1px] bg-gold-500" />
+            <span aria-hidden className="h-10 w-0.5 shrink-0 rounded-[1px] bg-brand-500" />
             <div className="flex gap-1 lg:gap-[5px]">{arch.left.map(toothButton)}</div>
           </div>
         ))}

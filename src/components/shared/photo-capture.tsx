@@ -61,11 +61,11 @@ export function PhotoCapture({
         <label
           htmlFor={inputId}
           className={cn(
-            'flex min-h-[180px] flex-1 cursor-pointer flex-col items-center justify-center gap-2.5 rounded-[18px] border-2 border-dashed border-gold-500 bg-gold-25 p-4 text-center text-gold-900',
+            'flex min-h-[180px] flex-1 cursor-pointer flex-col items-center justify-center gap-2.5 rounded-[18px] border-2 border-dashed border-brand-500 bg-brand-25 p-4 text-center text-brand-900',
             disabled && 'pointer-events-none opacity-50',
           )}
         >
-          <span className="flex size-[72px] items-center justify-center rounded-full bg-gold-700 text-white">
+          <span className="flex size-[72px] items-center justify-center rounded-full bg-brand-700 text-white">
             <Camera className="size-8" aria-hidden />
           </span>
           <span className="text-[17px] font-extrabold md:text-[19px]">{title}</span>

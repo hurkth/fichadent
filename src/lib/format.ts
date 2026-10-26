@@ -136,3 +136,14 @@ export function dayParts(iso: string | null | undefined): { day: string; year: s
   const [d = '', m = '', y = ''] = formatDate(iso).split(' ');
   return { day: `${d} ${m}`, year: y };
 }
+
+/** Iniciales de un nombre libre, sin título: "Dra. Ana Quispe" → "AQ". */
+export function nameInitials(name: string): string {
+  const words = name
+    .trim()
+    .split(/\s+/)
+    .filter((w) => !/^(dr|dra|od|cd)\.?$/i.test(w));
+  const first = words[0]?.charAt(0) ?? '';
+  const second = words.length > 1 ? (words[1]?.charAt(0) ?? '') : '';
+  return `${first}${second}`.toUpperCase() || '?';
+}

@@ -4,10 +4,10 @@ import type { Database } from '@/types/database';
 import { supabaseEnv } from './env';
 
 /** Cookies propias para "Mantener la sesión iniciada en esta tablet" (F01). */
-export const SESSION_COOKIE = 'gd_session'; // cookie de sesión: muere al cerrar el navegador
-export const REMEMBER_COOKIE = 'gd_remember'; // persistente: 30 días
+export const SESSION_COOKIE = 'fd_session'; // cookie de sesión: muere al cerrar el navegador
+export const REMEMBER_COOKIE = 'fd_remember'; // persistente: 30 días
 
-const PUBLIC_PATHS = ['/login', '/reset-password', '/auth'];
+const PUBLIC_PATHS = ['/login', '/registro', '/reset-password', '/auth'];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -56,7 +56,7 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  if (user && path === '/login') {
+  if (user && (path === '/login' || path === '/registro')) {
     return redirectTo('/');
   }
 

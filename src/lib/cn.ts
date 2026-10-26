@@ -6,8 +6,8 @@ const twMerge = extendTailwindMerge({
   extend: {
     theme: {
       color: [
-        'gold-25', 'gold-50', 'gold-100', 'gold-500', 'gold-700', 'gold-900',
-        'pink-25', 'pink-50', 'pink-200', 'pink-300', 'pink-800',
+        'brand-25', 'brand-50', 'brand-100', 'brand-500', 'brand-700', 'brand-900',
+        'brand-25', 'brand-50', 'brand-100', 'brand-500', 'brand-900',
         'ink', 'ink-muted', 'ink-subtle', 'bg', 'surface', 'surface-2',
         'line', 'line-card', 'line-soft', 'line-paper', 'paper', 'skeleton', 'toggle-off',
         'alert', 'alert-25', 'alert-50', 'alert-200', 'whatsapp', 'ok', 'ok-50', 'ok-700', 'warn', 'xray', 'xray-fg',

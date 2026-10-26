@@ -17,7 +17,7 @@ export interface ConditionToggleProps {
 /** Antecedente: interruptor Sí/No; al activarlo aparece el campo de detalle. */
 export function ConditionToggle({ code, label, active, detail, onActiveChange, onDetailChange }: ConditionToggleProps) {
   const inputRef = useRef<HTMLInputElement>(null);
-  // Solo se enfoca cuando la doctora lo activa, no al cargar un paciente que ya lo tenía.
+  // Solo se enfoca cuando el doctor lo activa, no al cargar un paciente que ya lo tenía.
   const [justActivated, setJustActivated] = useState(false);
 
   useEffect(() => {

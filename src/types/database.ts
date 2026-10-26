@@ -1,5 +1,5 @@
 /**
- * Tipos de la base de datos (migraciones 0001 + 0002).
+ * Tipos de la base de datos (supabase/migrations/0001_fichadent.sql).
  *
  * Escritos a mano con el mismo formato que genera Supabase. Cuando tengas
  * acceso al proyecto, reemplázalos por los generados:
@@ -17,39 +17,35 @@ export type Database = {
         Row: {
           id: string;
           name: string;
-          ruc: string | null;
           phone: string | null;
           address: string | null;
           logo_path: string | null;
+          brand_color: string;
+          plan: 'trial' | 'active' | 'demo' | 'suspended';
+          trial_ends_at: string;
           record_seq: number;
         } & Timestamps;
-        Insert: {
-          id?: string;
-          name: string;
-          ruc?: string | null;
-          phone?: string | null;
-          address?: string | null;
-          logo_path?: string | null;
-        };
+        Insert: never;
+        /** Solo estas columnas: plan y prueba no son editables desde la app. */
         Update: {
           name?: string;
-          ruc?: string | null;
           phone?: string | null;
           address?: string | null;
           logo_path?: string | null;
+          brand_color?: string;
         };
         Relationships: [];
       };
-      staff: {
+      memberships: {
         Row: {
-          id: string;
+          user_id: string;
           clinic_id: string;
-          full_name: string;
           role: 'owner' | 'dentist' | 'assistant';
+          display_name: string;
           active: boolean;
         } & Timestamps;
         Insert: never;
-        Update: never;
+        Update: { display_name?: string };
         Relationships: [];
       };
       patients: {
@@ -156,9 +152,11 @@ export type Database = {
         Row: {
           id: string;
           clinic_id: string;
-          patient_id: string;
+          patient_id: string | null;
+          guest_name: string | null;
+          guest_phone: string | null;
           starts_at: string;
-          ends_at: string | null;
+          ends_at: string;
           status: 'scheduled' | 'confirmed' | 'done' | 'cancelled' | 'no_show';
           reason: string | null;
           notes: string | null;
@@ -166,16 +164,21 @@ export type Database = {
           created_by: string | null;
         } & Timestamps;
         Insert: {
-          patient_id: string;
+          patient_id?: string | null;
+          guest_name?: string | null;
+          guest_phone?: string | null;
           starts_at: string;
-          ends_at?: string | null;
+          ends_at: string;
           status?: 'scheduled' | 'confirmed' | 'done' | 'cancelled' | 'no_show';
           reason?: string | null;
           notes?: string | null;
         };
         Update: {
+          patient_id?: string | null;
+          guest_name?: string | null;
+          guest_phone?: string | null;
           starts_at?: string;
-          ends_at?: string | null;
+          ends_at?: string;
           status?: 'scheduled' | 'confirmed' | 'done' | 'cancelled' | 'no_show';
           reason?: string | null;
           notes?: string | null;
@@ -245,7 +248,6 @@ export type Database = {
           clinic_id: string;
           patient_id: string;
           visit_id: string | null;
-          treatment_id: string | null;
           kind: 'paper_record' | 'xray' | 'photo' | 'consent' | 'other';
           storage_path: string;
           mime_type: string | null;
@@ -261,7 +263,6 @@ export type Database = {
           id?: string;
           patient_id: string;
           visit_id?: string | null;
-          treatment_id?: string | null;
           kind: 'paper_record' | 'xray' | 'photo' | 'consent' | 'other';
           storage_path: string;
           mime_type?: string | null;
@@ -279,6 +280,10 @@ export type Database = {
       search_patients: { Args: { q: string; max_results?: number }; Returns: Json[] };
       recent_patients: { Args: { max_results?: number }; Returns: Json[] };
       current_clinic_id: { Args: Record<PropertyKey, never>; Returns: string };
+      my_session: { Args: Record<PropertyKey, never>; Returns: Json };
+      list_patients: { Args: { page_size?: number; page?: number }; Returns: Json[] };
+      delete_patient: { Args: { p_id: string }; Returns: undefined };
+      agenda: { Args: { p_from: string; p_to: string }; Returns: Json[] };
     };
     Enums: { [_ in never]: never };
     CompositeTypes: { [_ in never]: never };

@@ -10,7 +10,7 @@ export function OfflineBanner() {
   return (
     <div
       role="alert"
-      className="mx-4 mt-4 flex items-start gap-3 rounded-2xl border border-gold-100 bg-st-progress-bg px-4 py-3.5 text-gold-900 md:mx-8"
+      className="mx-4 mt-4 flex items-start gap-3 rounded-2xl border border-brand-100 bg-st-progress-bg px-4 py-3.5 text-brand-900 md:mx-8"
     >
       <WifiOff className="mt-0.5 size-5 shrink-0" aria-hidden />
       <span className="flex flex-col gap-1">

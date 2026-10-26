@@ -1,7 +1,7 @@
 import type { PostgrestError } from '@supabase/supabase-js';
 import type { ZodError } from 'zod';
 
-/** Traduce errores de Postgres/Supabase a mensajes para la doctora. */
+/** Traduce errores de Postgres/Supabase a mensajes para el doctor. */
 export function dbErrorMessage(error: Pick<PostgrestError, 'code' | 'message'>): string {
   if (error.code === '23505' && error.message.includes('dni')) return 'Ya existe un paciente con ese DNI.';
   if (error.code === '23505') return 'Ese registro ya existe.';

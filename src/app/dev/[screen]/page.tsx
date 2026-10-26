@@ -58,7 +58,7 @@ export default async function DevScreen({ params, searchParams }: { params: Prom
       const q = screen === 'resultados' ? 'quispe' : screen === 'sin-resultados' ? 'Vargas Ttito' : '';
       body = (
         <main className="flex flex-1 flex-col gap-4 px-4 pt-5 pb-6 md:gap-[22px] md:px-8 md:pt-7">
-          <HomeHeader staffName={fxSession.staffName} now={DEMO_NOW} />
+          <HomeHeader now={DEMO_NOW} />
           <HomeSearch
             initialQuery={q}
             initialResults={screen === 'resultados' ? fxSearchResults : []}

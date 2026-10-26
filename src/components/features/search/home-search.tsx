@@ -56,7 +56,7 @@ export function HomeSearch({ recent, aside, initialQuery = '', initialResults = 
       <Link
         href="/pacientes/nuevo"
         aria-label="Nuevo paciente"
-        className="fixed right-5 bottom-28 z-20 flex size-16 items-center justify-center rounded-[20px] bg-gold-700 text-white shadow-[0_10px_24px_rgba(138,101,18,.35)] md:hidden"
+        className="fixed right-5 bottom-28 z-20 flex size-16 items-center justify-center rounded-[20px] bg-brand-700 text-white shadow-[0_10px_24px_rgba(17,17,17,.25)] md:hidden"
       >
         <Plus className="size-8" aria-hidden />
       </Link>

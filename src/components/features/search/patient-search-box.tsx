@@ -12,11 +12,11 @@ export interface PatientSearchBoxProps {
 /** Buscador grande: 84 px en tablet, 64 px en móvil, borde dorado. */
 export function PatientSearchBox({ value, onChange, loading, autoFocus = true }: PatientSearchBoxProps) {
   return (
-    <label className="flex h-16 shrink-0 items-center gap-2.5 rounded-[18px] border-2 border-gold-500 bg-surface pr-2 pl-[18px] shadow-[0_10px_30px_rgba(17,17,17,.06)] md:h-[84px] md:gap-4 md:rounded-[22px] md:pr-3.5 md:pl-[26px]">
+    <label className="flex h-16 shrink-0 items-center gap-2.5 rounded-[18px] border-2 border-brand-500 bg-surface pr-2 pl-[18px] shadow-[0_10px_30px_rgba(17,17,17,.06)] md:h-[84px] md:gap-4 md:rounded-[22px] md:pr-3.5 md:pl-[26px]">
       {loading ? (
-        <LoaderCircle className="size-6 shrink-0 animate-spin text-gold-700 md:size-7" aria-hidden />
+        <LoaderCircle className="size-6 shrink-0 animate-spin text-brand-700 md:size-7" aria-hidden />
       ) : (
-        <Search className="size-6 shrink-0 text-gold-700 md:size-7" aria-hidden />
+        <Search className="size-6 shrink-0 text-brand-700 md:size-7" aria-hidden />
       )}
       <input
         type="search"

@@ -65,3 +65,43 @@ export interface DraftTreatment {
 export type ActionResult<T = undefined> =
   | { ok: true; data: T }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
+
+export type ClinicPlan = Database['public']['Tables']['clinics']['Row']['plan'];
+
+/** Usuario logueado + su consultorio. Lo arma getSession() desde rpc('my_session'). */
+export interface ClinicSession {
+  userId: string;
+  displayName: string;
+  role: 'owner' | 'dentist' | 'assistant';
+  email: string;
+  clinic: {
+    id: string;
+    name: string;
+    phone: string | null;
+    address: string | null;
+    logoPath: string | null;
+    /** URL firmada (1 h) del logo, o null → "Tu logo aquí". */
+    logoUrl: string | null;
+    brandColor: string;
+    plan: ClinicPlan;
+    trialEndsAt: string;
+    trialDaysLeft: number;
+  };
+}
+
+export type Appointment = Tables['appointments']['Row'];
+
+/** Lo que devuelve rpc('agenda'). */
+export interface AgendaItem {
+  id: string;
+  starts_at: string;
+  ends_at: string;
+  status: AppointmentStatus;
+  reason: string | null;
+  notes: string | null;
+  patient_id: string | null;
+  name: string;
+  phone: string | null;
+  record_number: string | null;
+  visit_id: string | null;
+}

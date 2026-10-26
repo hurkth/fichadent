@@ -2,24 +2,20 @@
 @import "@fontsource-variable/manrope";
 
 /* ------------------------------------------------------------------
-   GOLDENT · tokens (docs/specs/02-design-system.md)
-   Usar SIEMPRE estas clases (bg-gold-700, text-ink-muted…), nunca hex.
+   FICHADENT · tokens (docs/specs/02-design-system.md)
+   Usar SIEMPRE estas clases (bg-brand-700, text-ink-muted…), nunca hex.
 ------------------------------------------------------------------- */
 @theme {
   --font-sans: "Manrope Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  /* Marca */
-  --color-gold-25: #fffbf2;
-  --color-gold-50: #fbf5e8;
-  --color-gold-100: #ebd9b3;
-  --color-gold-500: #c9962b;
-  --color-gold-700: #8a6512;
-  --color-gold-900: #6b4e0e;
-  --color-pink-25: #fcf4f8;
-  --color-pink-50: #fcf1f6;
-  --color-pink-200: #f1c3d7;
-  --color-pink-300: #e8a6c4;
-  --color-pink-800: #8a3f63;
+  /* Marca: valores por defecto (verde Fichadent). Dentro de la app los
+     reemplaza .brand-scope con el color del consultorio (--brand). */
+  --color-brand-25: #f3faf9;
+  --color-brand-50: #e7f4f2;
+  --color-brand-100: #bfe0db;
+  --color-brand-500: #3e9a90;
+  --color-brand-700: #0f766e;
+  --color-brand-900: #0b5a54;
 
   /* Neutros */
   --color-ink: #111111;
@@ -82,11 +78,11 @@
   }
 
   a {
-    color: var(--color-gold-700);
+    color: var(--color-brand-700);
   }
 
   :focus-visible {
-    outline: 3px solid var(--color-gold-500);
+    outline: 3px solid var(--color-brand-500);
     outline-offset: 2px;
   }
 
@@ -94,6 +90,16 @@
   textarea::placeholder {
     color: var(--color-ink-subtle);
     font-weight: 500;
+  }
+
+  /* Color del consultorio: <div class="brand-scope" style="--brand:#1D4ED8"> */
+  .brand-scope {
+    --color-brand-700: var(--brand);
+    --color-brand-900: color-mix(in oklab, var(--brand) 78%, black);
+    --color-brand-500: color-mix(in oklab, var(--brand) 72%, white);
+    --color-brand-100: color-mix(in oklab, var(--brand) 26%, white);
+    --color-brand-50: color-mix(in oklab, var(--brand) 10%, white);
+    --color-brand-25: color-mix(in oklab, var(--brand) 5%, white);
   }
 
   /* Números alineados (DNI, celular, HC) */

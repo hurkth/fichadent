@@ -7,10 +7,10 @@ export type ButtonVariant = 'primary' | 'secondary' | 'whatsapp' | 'ghost' | 'da
 export type ButtonSize = 'sm' | 'md' | 'lg' | 'icon';
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary: 'bg-gold-700 text-white border-transparent hover:bg-gold-900',
+  primary: 'bg-brand-700 text-white border-transparent hover:bg-brand-900',
   secondary: 'bg-surface text-ink border-line hover:border-ink-subtle',
   whatsapp: 'bg-whatsapp text-white border-transparent hover:brightness-110',
-  ghost: 'bg-transparent text-gold-700 border-transparent hover:text-gold-900',
+  ghost: 'bg-transparent text-brand-700 border-transparent hover:text-brand-900',
   danger: 'bg-alert text-white border-transparent hover:brightness-110',
 };
 

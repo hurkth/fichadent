@@ -2,22 +2,24 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LogoMark } from '@/components/ui/logo';
+import { ClinicLogo } from '@/components/ui/logo';
 import { cn } from '@/lib/cn';
+import { useClinic } from './clinic-context';
 import { ConnectionIndicator } from './connection-indicator';
 import { NAV_ITEMS } from './nav-items';
 import { UserMenu } from './user-menu';
 
-/** Tablet (≥ 768 px): barra lateral de 104 px. */
-export function SideNav({ staffName }: { staffName: string }) {
+/** Tablet (≥ 768 px): barra lateral de 104 px con el logo del consultorio. */
+export function SideNav() {
   const path = usePathname();
+  const { clinic } = useClinic();
   return (
     <nav
       aria-label="Principal"
       className="sticky top-0 hidden h-dvh w-[104px] shrink-0 flex-col items-center gap-2 border-r border-line-card bg-surface py-5 md:flex"
     >
-      <Link href="/" aria-label="GOLDENT, ir al inicio" className="mb-3 flex size-14 items-center justify-center">
-        <LogoMark size={44} />
+      <Link href="/" aria-label={`${clinic.name}, ir al inicio`} className="mb-3 flex items-center justify-center no-underline">
+        <ClinicLogo url={clinic.logoUrl} name={clinic.name} size={60} />
       </Link>
       {NAV_ITEMS.map(({ href, label, icon: Icon, match }) => {
         const on = match(path);
@@ -28,7 +30,7 @@ export function SideNav({ staffName }: { staffName: string }) {
             aria-current={on ? 'page' : undefined}
             className={cn(
               'flex h-[72px] w-[84px] flex-col items-center justify-center gap-1.5 rounded-2xl text-xs font-bold no-underline',
-              on ? 'bg-gold-50 text-gold-900' : 'text-ink-muted hover:text-ink',
+              on ? 'bg-brand-50 text-brand-900' : 'text-ink-muted hover:text-ink',
             )}
           >
             <Icon className="size-[22px]" aria-hidden />
@@ -38,7 +40,7 @@ export function SideNav({ staffName }: { staffName: string }) {
       })}
       <div className="flex-1" />
       <ConnectionIndicator />
-      <UserMenu name={staffName} />
+      <UserMenu />
     </nav>
   );
 }

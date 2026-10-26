@@ -2,8 +2,8 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: { default: 'GOLDENT · Historia clínica', template: '%s · GOLDENT' },
-  description: 'Historia clínica digital de Goldent Consultorio Odontológico',
+  title: { default: 'Fichadent · Historia clínica dental', template: '%s · Fichadent' },
+  description: 'Historia clínica digital y agenda para consultorios dentales.',
   robots: { index: false, follow: false },
 };
 

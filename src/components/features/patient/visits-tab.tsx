@@ -132,7 +132,7 @@ function TimelineEntry({ first, day, year, children }: { first: boolean; day: st
       </div>
       <div className="flex flex-col items-center" aria-hidden>
         <span className={cn('h-5 w-0.5', first ? 'bg-transparent' : 'bg-line-paper')} />
-        <span className="size-3.5 shrink-0 rounded-full border-[3px] border-gold-500 bg-surface" />
+        <span className="size-3.5 shrink-0 rounded-full border-[3px] border-brand-500 bg-surface" />
         <span className="w-0.5 flex-1 bg-line-paper" />
       </div>
       <article className="mb-4 flex flex-col gap-2.5 rounded-[18px] border border-line-card bg-surface px-4 py-4 md:px-5">{children}</article>

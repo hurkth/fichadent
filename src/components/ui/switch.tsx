@@ -31,7 +31,7 @@ export function Switch({ checked, onChange, label, onLabel = 'Sí', offLabel = '
         onClick={() => onChange(!checked)}
         className={cn(
           'flex h-10 w-[68px] shrink-0 cursor-pointer rounded-[20px] border-0 p-1 transition-colors disabled:opacity-50',
-          checked ? 'justify-end bg-gold-700' : 'justify-start bg-toggle-off',
+          checked ? 'justify-end bg-brand-700' : 'justify-start bg-toggle-off',
         )}
       >
         <span className="size-8 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.25)]" />

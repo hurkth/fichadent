@@ -34,7 +34,7 @@ export function LoginForm({ initialError }: { initialError?: string }) {
         <PasswordInput id="password" name="password" autoComplete="current-password" />
       </div>
       <label className="flex min-h-12 cursor-pointer items-center gap-3.5">
-        <input type="checkbox" name="remember" defaultChecked className="m-0 size-7 accent-gold-700" />
+        <input type="checkbox" name="remember" defaultChecked className="m-0 size-7 accent-brand-700" />
         <span className="text-base font-semibold">Mantener la sesión iniciada en esta tablet</span>
       </label>
       <Button type="submit" size="lg" loading={pending} className="w-full">
