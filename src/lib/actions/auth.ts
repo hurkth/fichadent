@@ -4,6 +4,8 @@ import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { REMEMBER_COOKIE, SESSION_COOKIE } from '@/lib/supabase/middleware';
+import { signUpSchema } from '@/lib/schemas/clinic';
+import { fieldErrors } from './errors';
 
 export interface LoginState {
   error?: string;
@@ -29,19 +31,70 @@ export async function login(_prev: LoginState, formData: FormData): Promise<Logi
     }
     return { error: 'No pudimos conectar con el servidor. Revisa la conexión e inténtalo otra vez.' };
   }
-  // El acceso a la clínica (fila activa en `staff`) lo valida el layout de la app:
+  // El consultorio activo lo valida el layout de la app:
   // si falta, redirige a /auth/signout → /login?error=sin-acceso.
+  await setSessionCookies(remember);
+  redirect('/');
+}
 
-  // `secure` solo en HTTPS: en http://localhost (npm start) una cookie segura se descarta
-  // y el middleware te devolvería al login sin explicación.
+/** Cookies de "mantener la sesión". `secure` solo en HTTPS (en http://localhost se descartaría). */
+async function setSessionCookies(remember: boolean) {
   const proto = (await headers()).get('x-forwarded-proto') ?? 'http';
   const store = await cookies();
   const base = { httpOnly: true, sameSite: 'lax' as const, secure: proto === 'https', path: '/' };
   store.set(SESSION_COOKIE, '1', base);
   if (remember) store.set(REMEMBER_COOKIE, '1', { ...base, maxAge: 60 * 60 * 24 * 30 });
   else store.delete(REMEMBER_COOKIE);
+}
 
-  redirect('/');
+export interface SignUpState {
+  error?: string;
+  fieldErrors?: Record<string, string>;
+  /** Supabase pide confirmar el correo antes de entrar. */
+  confirmEmail?: string;
+  values?: Record<string, string>;
+}
+
+/** Autoregistro: crea el usuario; la base crea su consultorio con 5 días de prueba. */
+export async function signUp(_prev: SignUpState, formData: FormData): Promise<SignUpState> {
+  const raw = {
+    full_name: String(formData.get('full_name') ?? ''),
+    clinic_name: String(formData.get('clinic_name') ?? ''),
+    phone: String(formData.get('phone') ?? ''),
+    email: String(formData.get('email') ?? ''),
+    password: String(formData.get('password') ?? ''),
+  };
+  const values = { ...raw, password: '' };
+  const parsed = signUpSchema.safeParse(raw);
+  if (!parsed.success) return { error: 'Revisa los campos marcados.', fieldErrors: fieldErrors(parsed.error), values };
+  const { email, password, ...meta } = parsed.data;
+
+  const origin = (await headers()).get('origin') ?? '';
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: meta, emailRedirectTo: `${origin}/auth/callback?next=/` },
+  });
+
+  if (error) {
+    console.error('[signUp]', error.code, error.message);
+    if (error.code === 'user_already_exists' || error.code === 'email_exists') {
+      return { error: 'Ya existe una cuenta con ese correo. Inicia sesión.', values };
+    }
+    if (error.code === 'weak_password') return { fieldErrors: { password: 'Contraseña muy débil. Usa letras y números.' }, error: 'Revisa la contraseña.', values };
+    if (error.code === 'over_email_send_rate_limit') return { error: 'Demasiados registros seguidos. Inténtalo en unos minutos.', values };
+    return { error: 'No pudimos crear tu cuenta. Inténtalo otra vez.', values };
+  }
+
+  // Supabase devuelve un usuario sin identidades cuando el correo ya existe (protección anti-enumeración).
+  if (data.user && data.user.identities?.length === 0) {
+    return { error: 'Ya existe una cuenta con ese correo. Inicia sesión.', values };
+  }
+  if (!data.session) return { confirmEmail: email };
+
+  await setSessionCookies(true);
+  redirect('/?bienvenida=1');
 }
 
 export async function signOut(): Promise<void> {
